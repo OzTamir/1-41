@@ -17,6 +17,7 @@
 		F57691281B62602C004E37C1 /* OneFourtyOneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57691271B62602C004E37C1 /* OneFourtyOneTests.swift */; };
 		F57691321B62618B004E37C1 /* GameplayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57691311B62618B004E37C1 /* GameplayScene.swift */; };
 		F57691341B6261A3004E37C1 /* GameplayScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = F57691331B6261A3004E37C1 /* GameplayScene.sks */; };
+		F59049081B62C7CB00352C74 /* GameplayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59049071B62C7CB00352C74 /* GameplayExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		F57691271B62602C004E37C1 /* OneFourtyOneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneFourtyOneTests.swift; sourceTree = "<group>"; };
 		F57691311B62618B004E37C1 /* GameplayScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameplayScene.swift; sourceTree = "<group>"; };
 		F57691331B6261A3004E37C1 /* GameplayScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameplayScene.sks; sourceTree = "<group>"; };
+		F59049071B62C7CB00352C74 /* GameplayExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameplayExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 				F576910D1B62602C004E37C1 /* AppDelegate.swift */,
 				F576910F1B62602C004E37C1 /* MenuScene.sks */,
 				F57691311B62618B004E37C1 /* GameplayScene.swift */,
+				F59049071B62C7CB00352C74 /* GameplayExtension.swift */,
 				F57691331B6261A3004E37C1 /* GameplayScene.sks */,
 				F57691111B62602C004E37C1 /* MenuScene.swift */,
 				F57691131B62602C004E37C1 /* GameViewController.swift */,
@@ -228,6 +231,7 @@
 			files = (
 				F57691321B62618B004E37C1 /* GameplayScene.swift in Sources */,
 				F57691121B62602C004E37C1 /* MenuScene.swift in Sources */,
+				F59049081B62C7CB00352C74 /* GameplayExtension.swift in Sources */,
 				F57691141B62602C004E37C1 /* GameViewController.swift in Sources */,
 				F576910E1B62602C004E37C1 /* AppDelegate.swift in Sources */,
 			);

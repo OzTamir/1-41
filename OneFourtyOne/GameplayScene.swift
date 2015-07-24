@@ -10,18 +10,12 @@
 import UIKit
 import SpriteKit
 
-enum Buttons : Int {
-    case UpRight = 0
-    case UpLeft = 1
-    case DownRight = 2
-    case DownLeft = 3
-}
-
 class GameplayScene: SKScene {
     let colors = ["Green", "Red", "Blue", "Yellow", "White", "Black", "Purple", "Pink", "Brown", "Orange"]
     var nodeColors = [String]()
     var targetColor : String?
     var time : NSTimeInterval?
+    var level = 1
     var started = false
     var running = true
     var score = 0.0
@@ -37,91 +31,6 @@ class GameplayScene: SKScene {
         setBlocker(false, zPos: 4)
         initDialog()
         initButtons()
-    }
-    
-    func initDialog() -> () {
-        // Choose the color for this game
-        let arrayKey = Int(arc4random_uniform(UInt32(self.colors.count)))
-        self.targetColor = colors[arrayKey]
-        
-        setLabelText("instructionLabel", text: "Press the button that says \(self.targetColor!)")
-    }
-    
-    func getRandomColor() -> UIColor{
-        var randomRed:CGFloat = CGFloat(drand48())
-        var randomGreen:CGFloat = CGFloat(drand48())
-        var randomBlue:CGFloat = CGFloat(drand48())
-        return UIColor(red: randomRed, green: randomGreen, blue: randomBlue, alpha: 1.0)
-    }
-    
-    func setLabelText(labelName: String, text: String) -> () {
-        let label = childNodeWithName(labelName) as! SKLabelNode
-        label.text = text
-    }
-    
-    func getColors() -> ([String]) {
-        var localColors = ["Green", "Red", "Blue", "Yellow", "White", "Black", "Purple", "Pink", "Brown", "Orange"]
-        var items = [String]()
-        var targetInArray = false
-        for var i = 0; i < 4 ; i++ {
-            
-            // random key from array
-            let arrayKey = Int(arc4random_uniform(UInt32(localColors.count)))
-            
-            if self.targetColor! == localColors[arrayKey] {
-                targetInArray = true
-            }
-            // your random number
-            items.append(localColors[arrayKey])
-            
-            // make sure the number isnt repeated
-            localColors.removeAtIndex(arrayKey)
-        }
-        if !targetInArray {
-            items[Int(arc4random_uniform(UInt32(items.count)))] = self.targetColor!
-        }
-        return items
-    }
-    
-    func initButtons() -> () {
-        setLabelText("colorLabel", text: self.targetColor!)
-        
-        var items = getColors()
-        
-        // Init the up-right button/label
-        let upRightButton = childNodeWithName("upRightButton")
-        upRightButton?.runAction(SKAction.colorizeWithColor(getRandomColor(), colorBlendFactor: 1.0, duration: 0.0))
-        setLabelText("upRightLabel", text: items[0])
-        self.nodeColors.append(items[0])
-        
-        // Init the up-left button/label
-        let upLeftButton = childNodeWithName("upLeftButton")
-        upLeftButton?.runAction(SKAction.colorizeWithColor(getRandomColor(), colorBlendFactor: 1.0, duration: 0.0))
-        setLabelText("upLeftLabel", text: items[1])
-        self.nodeColors.append(items[1])
-        
-        // Init the down-right button/label
-        let downRightButton = childNodeWithName("downRightButton")
-        downRightButton?.runAction(SKAction.colorizeWithColor(getRandomColor(), colorBlendFactor: 1.0, duration: 0.0))
-        setLabelText("downRightLabel", text: items[2])
-        self.nodeColors.append(items[2])
-        
-        // Init the down-left button/label
-        let downLeftButton = childNodeWithName("downLeftButton")
-        downLeftButton?.runAction(SKAction.colorizeWithColor(getRandomColor(), colorBlendFactor: 1.0, duration: 0.0))
-        setLabelText("downLeftLabel", text: items[3])
-        self.nodeColors.append(items[3])
-    }
-    
-    func setBlocker(hidden: Bool, zPos: Int) -> () {
-        let buttonsBlocker = childNodeWithName("buttonsBlocker")
-        let instructionLabel = childNodeWithName("instructionLabel") as! SKLabelNode
-        
-        // Hide the blockers and send 'em to the back
-        buttonsBlocker?.hidden = hidden
-        buttonsBlocker?.zPosition = CGFloat(zPos - 1)
-        instructionLabel.hidden = hidden
-        instructionLabel.zPosition = CGFloat(zPos)
     }
     
     override func update(currentTime: NSTimeInterval) {
@@ -148,7 +57,6 @@ class GameplayScene: SKScene {
                 self.started = true
                 self.time = currentTime
                 setBlocker(true, zPos: 0)
-                setLabelText("colorLabel", text: self.targetColor!)
                 timeLabel.text = "GO"
             }
         }
@@ -157,45 +65,27 @@ class GameplayScene: SKScene {
     
     func checkPress(color: String) -> () {
         let debugLabel = childNodeWithName("debugLabel") as! SKLabelNode
-        // If the color of the button pressed is the correct color, stop the game session
+        // Change the score and the label accordinaly
         if color == self.targetColor {
             debugLabel.text = "CORRECT!"
             setLabelText("timeLabel", text: "Correct!")
             changeScore(5.0, scoreAnimation: 2.0)
-//            self.running = false
+            self.level++
+            setLabelText("levelCounter", text: "\(self.level)")
         }
-            
-        // else keep it going
         else {
             setLabelText("timeLabel", text: "False!")
             changeScore(-5.0, scoreAnimation: 0.5)
             debugLabel.text = "FALSE!"
         }
         
+        // Start a new level
         self.time = nil
         self.thinkTimeCounter = nil
         self.started = false
         initDialog()
         setBlocker(false, zPos: 4)
         initButtons()
-    }
-    
-    func backToMenu() -> () {
-        // TODO: Add "Are You Sure?" dialog
-        let transition = SKTransition.pushWithDirection(.Up, duration: 0.75)
-        let gameplayScene = MenuScene(fileNamed: "MenuScene")
-        self.view?.presentScene(gameplayScene, transition: transition)
-    }
-    
-    func changeScore(scoreChange: Double, scoreAnimation: Double) {
-        let scoreAnimation = SKAction.scaleTo(CGFloat(scoreAnimation), duration: 0.25)
-        let newScore = max(self.score + scoreChange, 0)
-        self.score = newScore
-        let changeText = SKAction.runBlock() { self.setLabelText("scoreCounter", text: "\(Int(newScore))") }
-        let revertAnimation = SKAction.scaleTo(CGFloat(1), duration: 0.25)
-        let completeAction = SKAction.sequence([scoreAnimation, changeText, revertAnimation])
-        
-        childNodeWithName("scoreCounter")?.runAction(completeAction)
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
@@ -206,21 +96,22 @@ class GameplayScene: SKScene {
         
         let debugLabel = childNodeWithName("debugLabel") as! SKLabelNode
         if let name = node.name {
+            debugLabel.text = name
             // Check if it's a button or a label and if it does, check if the press was correct
             switch name {
                 case "upRightButton", "upRightLabel":
-                    checkPress(self.nodeColors[Buttons.UpRight.rawValue])
+                    checkPress(self.nodeColors[0])
                 case "upLeftButton", "upLeftLabel":
-                    checkPress(self.nodeColors[Buttons.UpRight.rawValue])
+                    checkPress(self.nodeColors[1])
                 case "downRightButton", "downRightLabel":
-                    checkPress(self.nodeColors[Buttons.UpRight.rawValue])
+                    checkPress(self.nodeColors[2])
                 case "downLeftButton", "downLeftLabel":
-                    checkPress(self.nodeColors[Buttons.UpRight.rawValue])
+                    checkPress(self.nodeColors[3])
                 // case ask to go back
                 case "backButton", "backLabel":
                     backToMenu()
                 default:
-                    debugLabel.text = name
+                    break
             }
         }
         else {
