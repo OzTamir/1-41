@@ -61,23 +61,31 @@ class GameplayScene: SKScene {
     
     func getColors() -> ([String]) {
         var localColors = ["Green", "Red", "Blue", "Yellow", "White", "Black", "Purple", "Pink", "Brown", "Orange"]
-        var items = [self.targetColor!]
-        for var i = 0; i < 3 ; i++ {
+        var items = [String]()
+        var targetInArray = false
+        for var i = 0; i < 4 ; i++ {
             
             // random key from array
             let arrayKey = Int(arc4random_uniform(UInt32(localColors.count)))
             
+            if self.targetColor! == localColors[arrayKey] {
+                targetInArray = true
+            }
             // your random number
-            items.append(colors[arrayKey])
+            items.append(localColors[arrayKey])
             
             // make sure the number isnt repeated
             localColors.removeAtIndex(arrayKey)
         }
-        
+        if !targetInArray {
+            items[Int(arc4random_uniform(UInt32(items.count)))] = self.targetColor!
+        }
         return items
     }
     
     func initButtons() -> () {
+        setLabelText("colorLabel", text: self.targetColor!)
+        
         var items = getColors()
         
         // Init the up-right button/label
@@ -118,7 +126,7 @@ class GameplayScene: SKScene {
     
     override func update(currentTime: NSTimeInterval) {
         // On the first updtae call, set the time variables
-        if self.time == nil {
+        if self.time == nil{
             self.time = currentTime
             self.thinkTimeCounter = self.time?.advancedBy(self.thinkTime)
         }
@@ -153,14 +161,23 @@ class GameplayScene: SKScene {
         if color == self.targetColor {
             debugLabel.text = "CORRECT!"
             setLabelText("timeLabel", text: "Correct!")
-            self.running = false
+            changeScore(5.0, scoreAnimation: 2.0)
+//            self.running = false
         }
             
         // else keep it going
         else {
-            setLabelText("timeLabel", text: "Correct!")
+            setLabelText("timeLabel", text: "False!")
+            changeScore(-5.0, scoreAnimation: 0.5)
             debugLabel.text = "FALSE!"
         }
+        
+        self.time = nil
+        self.thinkTimeCounter = nil
+        self.started = false
+        initDialog()
+        setBlocker(false, zPos: 4)
+        initButtons()
     }
     
     func backToMenu() -> () {
@@ -168,6 +185,17 @@ class GameplayScene: SKScene {
         let transition = SKTransition.pushWithDirection(.Up, duration: 0.75)
         let gameplayScene = MenuScene(fileNamed: "MenuScene")
         self.view?.presentScene(gameplayScene, transition: transition)
+    }
+    
+    func changeScore(scoreChange: Double, scoreAnimation: Double) {
+        let scoreAnimation = SKAction.scaleTo(CGFloat(scoreAnimation), duration: 0.25)
+        let newScore = max(self.score + scoreChange, 0)
+        self.score = newScore
+        let changeText = SKAction.runBlock() { self.setLabelText("scoreCounter", text: "\(Int(newScore))") }
+        let revertAnimation = SKAction.scaleTo(CGFloat(1), duration: 0.25)
+        let completeAction = SKAction.sequence([scoreAnimation, changeText, revertAnimation])
+        
+        childNodeWithName("scoreCounter")?.runAction(completeAction)
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
