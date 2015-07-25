@@ -38,6 +38,7 @@ extension GameplayScene {
         let gameoverScene = GameoverScene(fileNamed: "GameoverScene")
         gameoverScene.score = self.score
         gameoverScene.mode = self.gameMode
+        gameoverScene.scaleMode = .Fill
         self.view?.presentScene(gameoverScene, transition: transition)
     }
     
@@ -163,6 +164,7 @@ extension GameplayScene {
         pauseScene.currentGameMode = self.gameMode
         pauseScene.currentLives = self.lives
         pauseScene.currentScore = self.score
+        pauseScene.scaleMode = .Fill
         self.view?.presentScene(pauseScene, transition: transition)
     }
     

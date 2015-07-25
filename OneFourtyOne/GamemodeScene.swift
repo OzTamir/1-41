@@ -34,14 +34,16 @@ class GamemodeScene: SKScene {
         let transition = SKTransition.pushWithDirection(.Down, duration: AppDelegate.animationDuration)
         let gameplayScene = GameplayScene(fileNamed: "GameplayScene")
         gameplayScene.gameMode = mode
+        gameplayScene.scaleMode = .Fill
         self.view?.presentScene(gameplayScene, transition: transition)
     }
     
     // Called when the back button is pressed
     func backToMenu() -> () {
         let transition = SKTransition.pushWithDirection(.Right, duration: AppDelegate.animationDuration)
-        let gameplayScene = MenuScene(fileNamed: "MenuScene")
-        self.view?.presentScene(gameplayScene, transition: transition)
+        let menuScene = MenuScene(fileNamed: "MenuScene")
+        menuScene.scaleMode = .Fill
+        self.view?.presentScene(menuScene, transition: transition)
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {

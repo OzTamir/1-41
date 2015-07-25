@@ -28,8 +28,9 @@ class PauseScene: SKScene {
     func backToMenu() -> () {
         // TODO: Add "Are You Sure?" dialog
         let transition = SKTransition.pushWithDirection(.Up, duration: AppDelegate.animationDuration)
-        let gameplayScene = MenuScene(fileNamed: "MenuScene")
-        self.view?.presentScene(gameplayScene, transition: transition)
+        let menuScene = MenuScene(fileNamed: "MenuScene")
+        menuScene.scaleMode = .Fill
+        self.view?.presentScene(menuScene, transition: transition)
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {

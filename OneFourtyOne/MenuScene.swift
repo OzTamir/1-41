@@ -31,11 +31,13 @@ class MenuScene: SKScene {
                 case "startButton", "startLabel":
                     let transition = SKTransition.pushWithDirection(.Left, duration: AppDelegate.animationDuration)
                     let gamemodeScene = GamemodeScene(fileNamed: "GamemodeScene")
+                    gamemodeScene.scaleMode = .Fill
                     self.view?.presentScene(gamemodeScene, transition: transition)
                 case "optionsButton", "optionsLabel":
                     let transition = SKTransition.pushWithDirection(.Up, duration: AppDelegate.animationDuration)
-                    let gameplayScene = OptionsScene(fileNamed: "OptionsScene")
-                    self.view?.presentScene(gameplayScene, transition: transition)
+                    let optionsScene = OptionsScene(fileNamed: "OptionsScene")
+                    optionsScene.scaleMode = .Fill
+                    self.view?.presentScene(optionsScene, transition: transition)
                 case "titleLabel":
                     animateTitleOnTouch()
                 default:

@@ -26,10 +26,10 @@ extension SKNode {
 }
 
 class GameViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "pauseGame", name: "PauseGameScene", object: nil)
         if let scene = MenuScene.unarchiveFromFile("MenuScene") as? MenuScene {
             // Configure the view.
             let skView = self.view as! SKView
@@ -46,6 +46,19 @@ class GameViewController: UIViewController {
         }
     }
 
+    @objc func pauseGame() -> () {
+        let skView = self.view as! SKView
+        if let gameplayScene = skView.scene as? GameplayScene {
+            let transition = SKTransition.pushWithDirection(.Up, duration: 0.0)
+            let pauseScene = PauseScene(fileNamed: "PauseScene")
+            pauseScene.currentGameMode = gameplayScene.gameMode
+            pauseScene.currentLives = gameplayScene.lives
+            pauseScene.currentScore = gameplayScene.score
+            pauseScene.scaleMode = .Fill
+            gameplayScene.view?.presentScene(pauseScene, transition: transition)
+        }
+    }
+    
     override func shouldAutorotate() -> Bool {
         return true
     }
