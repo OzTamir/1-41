@@ -26,26 +26,33 @@ class MenuScene: SKScene {
         let location = touch.locationInNode(self)
         let node = self.nodeAtPoint(location)
         
-        if node.name == "startButton" || node.name == "startLabel" {
-            let transition = SKTransition.pushWithDirection(.Down, duration: 0.75)
-            let gameplayScene = GameplayScene(fileNamed: "GameplayScene")
-            self.view?.presentScene(gameplayScene, transition: transition)
+        if let name = node.name {
+            switch name {
+                case "startButton", "startLabel":
+                    let transition = SKTransition.pushWithDirection(.Down, duration: 0.75)
+                    let gameplayScene = GameplayScene(fileNamed: "GameplayScene")
+                    self.view?.presentScene(gameplayScene, transition: transition)
+                case "optionsButton", "optionsLabel":
+                    let transition = SKTransition.pushWithDirection(.Up, duration: 0.75)
+                    let gameplayScene = OptionsScene(fileNamed: "OptionsScene")
+                    self.view?.presentScene(gameplayScene, transition: transition)
+                case "titleLabel":
+                    animateTitleOnTouch()
+                default:
+                    break
+            }
         }
         
-        
-//        let welcomeNode = childNodeWithName("welcomeNode")
-//        
-//        if (welcomeNode != nil) {
-//            let fadeAway = SKAction.fadeOutWithDuration(1.0)
-//            
-//            welcomeNode?.runAction(fadeAway, completion: {
-//                let doors = SKTransition.doorwayWithDuration(1.0)
-//                let archeryScene = GameplayScene(fileNamed: "GameplayScene")
-//                self.view?.presentScene(archeryScene, transition: doors)
-//            })
-//        }
     }
    
+    func animateTitleOnTouch() -> () {
+        let title = childNodeWithName("titleLabel")
+        let growAnimation = SKAction.scaleTo(1.5, duration: 0.25)
+        let shrinkAnimation = SKAction.scaleTo(1.0, duration: 0.25)
+        let animationSequence = SKAction.sequence([growAnimation, shrinkAnimation])
+        title?.runAction(animationSequence)
+    }
+    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
     }

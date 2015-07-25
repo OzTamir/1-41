@@ -21,6 +21,29 @@ import SpriteKit
 
 extension GameplayScene {
     
+    // Present the "Game Over" screen
+    func gameover() -> () {
+        let transition = SKTransition.pushWithDirection(.Left, duration: 0.75)
+        let gameoverScene = GameoverScene(fileNamed: "GameoverScene")
+        gameoverScene.score = self.score
+        self.view?.presentScene(gameoverScene, transition: transition)
+    }
+    
+    // Change a full heart to an empty heart
+    func decreaseHeart() -> () {
+        let heart = childNodeWithName("heart\(self.lives)")
+        let shrinkAnimation = SKAction.scaleTo(0.5, duration: 0.25)
+        let changeTexture = SKAction.setTexture(SKTexture(imageNamed: "heart_icon_empty_80px"), resize: false)
+        let revertAnimation = SKAction.scaleTo(1.0, duration: 0.25)
+        let animationSequence = SKAction.sequence([
+            shrinkAnimation,
+            changeTexture,
+            revertAnimation
+        ])
+        heart?.runAction(animationSequence)
+        
+    }
+    
     // Setup a new game session
     func initDialog() -> () {
         // Choose the color for this game
@@ -125,6 +148,9 @@ extension GameplayScene {
     func changeScore(scoreChange: Double, scoreAnimation: Double) {
         let scoreAnimation = SKAction.scaleTo(CGFloat(scoreAnimation), duration: 0.25)
         let newScore = max(self.score + scoreChange, 0)
+        if newScore == self.score {
+            return
+        }
         self.score = newScore
         let changeText = SKAction.runBlock() { self.setLabelText("scoreCounter", text: "\(Int(newScore))") }
         let revertAnimation = SKAction.scaleTo(CGFloat(1), duration: 0.25)

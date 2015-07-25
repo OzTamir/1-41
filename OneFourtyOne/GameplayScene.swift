@@ -15,10 +15,10 @@ class GameplayScene: SKScene {
     var nodeColors = [String]()
     var targetColor : String?
     var time : NSTimeInterval?
-    var level = 1
     var started = false
     var running = true
     var score = 0.0
+    var lives = 3
 
     // Time before the buttons are revealed
     let thinkTime = 4.0
@@ -70,10 +70,13 @@ class GameplayScene: SKScene {
             debugLabel.text = "CORRECT!"
             setLabelText("timeLabel", text: "Correct!")
             changeScore(5.0, scoreAnimation: 2.0)
-            self.level++
-            setLabelText("levelCounter", text: "\(self.level)")
         }
         else {
+            decreaseHeart()
+            if self.lives == 1 {
+                gameover()
+            }
+            self.lives -= 1
             setLabelText("timeLabel", text: "False!")
             changeScore(-5.0, scoreAnimation: 0.5)
             debugLabel.text = "FALSE!"
