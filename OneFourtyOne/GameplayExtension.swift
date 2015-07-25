@@ -152,7 +152,7 @@ extension GameplayScene {
             return
         }
         self.score = newScore
-        let changeText = SKAction.runBlock() { self.setLabelText("scoreCounter", text: "\(Int(newScore))") }
+        let changeText = SKAction.runBlock() { self.setLabelText("scoreCounter", text: "\(newScore)") }
         let revertAnimation = SKAction.scaleTo(CGFloat(1), duration: 0.25)
         let completeAction = SKAction.sequence([scoreAnimation, changeText, revertAnimation])
         

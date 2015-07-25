@@ -22,15 +22,16 @@ class GameoverScene: SKScene {
     }
     
     func newGame() -> () {
-        return
+        let transition = SKTransition.pushWithDirection(.Right, duration: 0.75)
+        let gameplayScene = GameplayScene(fileNamed: "GameplayScene")
+        self.view?.presentScene(gameplayScene, transition: transition)
     }
     
     // Called when the back button is pressed
     func backToMenu() -> () {
-        // TODO: Add "Are You Sure?" dialog
         let transition = SKTransition.pushWithDirection(.Down, duration: 0.75)
-        let gameplayScene = MenuScene(fileNamed: "MenuScene")
-        self.view?.presentScene(gameplayScene, transition: transition)
+        let menuScreen = MenuScene(fileNamed: "MenuScene")
+        self.view?.presentScene(menuScreen, transition: transition)
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {

@@ -15,8 +15,10 @@ class GameplayScene: SKScene {
     var nodeColors = [String]()
     var targetColor : String?
     var time : NSTimeInterval?
+    var currentTime : NSTimeInterval?
     var started = false
     var running = true
+    let goalTime = 1.41
     var score = 0.0
     var lives = 3
 
@@ -34,6 +36,8 @@ class GameplayScene: SKScene {
     }
     
     override func update(currentTime: NSTimeInterval) {
+        // Set the object's currentTime property
+        self.currentTime = currentTime
         // On the first updtae call, set the time variables
         if self.time == nil{
             self.time = currentTime
@@ -65,11 +69,12 @@ class GameplayScene: SKScene {
     
     func checkPress(color: String) -> () {
         let debugLabel = childNodeWithName("debugLabel") as! SKLabelNode
+        
         // Change the score and the label accordinaly
         if color == self.targetColor {
             debugLabel.text = "CORRECT!"
             setLabelText("timeLabel", text: "Correct!")
-            changeScore(5.0, scoreAnimation: 2.0)
+            changeScore(calculateScore(), scoreAnimation: 2.0)
         }
         else {
             decreaseHeart()
@@ -78,7 +83,6 @@ class GameplayScene: SKScene {
             }
             self.lives -= 1
             setLabelText("timeLabel", text: "False!")
-            changeScore(-5.0, scoreAnimation: 0.5)
             debugLabel.text = "FALSE!"
         }
         
@@ -89,6 +93,16 @@ class GameplayScene: SKScene {
         initDialog()
         setBlocker(false, zPos: 4)
         initButtons()
+    }
+    
+    func calculateScore() -> (Double) {
+        let timeDelta = self.currentTime! - self.time!
+        if timeDelta > self.goalTime {
+            return 0
+        }
+        // I didn't just returned the expression because I'm sure the scoring system is due to changes
+        let newScore = Double(Int(timeDelta * 10)) / 10.0
+        return newScore
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
