@@ -10,14 +10,34 @@ import UIKit
 import SpriteKit
 
 class GameoverScene: SKScene {
+    var mode: GameModes?
     var score : Double?
     
     override func didMoveToView(view: SKView) {
+        let highScoreLabel = childNodeWithName("highscoreLabel") as! SKLabelNode
+        highScoreLabel.hidden = true
         let scoreLabel = childNodeWithName("scoreLabel") as! SKLabelNode
         if let score = self.score {
-            scoreLabel.text = "\(score)"
+            scoreLabel.text = ScoreManager.formatScore(score)
         } else {
             scoreLabel.text = "ERROR"
+        }
+        if let gameMode = self.mode {
+            if let score = self.score {
+                let modeHighscore = ScoreManager.getHighscoreForGameMode(gameMode)
+                switch gameMode {
+                    case .Arcade, .Countdown:
+                        if score > modeHighscore {
+                            ScoreManager.setHighscoreForGameMode(gameMode, newScore: score)
+                            highScoreLabel.hidden = false
+                        }
+                    case .Speed:
+                        if score < modeHighscore && score > 0.0 {
+                            ScoreManager.setHighscoreForGameMode(gameMode, newScore: score)
+                            highScoreLabel.hidden = false
+                        }
+                }
+            }
         }
     }
     

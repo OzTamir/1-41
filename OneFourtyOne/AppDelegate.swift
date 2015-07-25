@@ -11,11 +11,16 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    static let defaults = NSUserDefaults.standardUserDefaults()
     var window: UIWindow?
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        if AppDelegate.defaults.boolForKey("notFirstRun") == false {
+            ScoreManager.resetHighscores()
+            AppDelegate.defaults.setBool(true, forKey: "notFirstRun")
+        }
         return true
     }
 

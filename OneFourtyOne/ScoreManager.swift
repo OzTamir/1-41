@@ -12,8 +12,24 @@ class ScoreManager {
     
     static let goalTime = 1.41
     
+    class func resetHighscores() -> () {
+        AppDelegate.defaults.setDouble(0.0, forKey: "arcadeHighscore")
+        AppDelegate.defaults.setDouble(1.42, forKey: "speedHighscore")
+        AppDelegate.defaults.setDouble(0.0, forKey: "countdownHighscore")
+    }
+    
     class func getHighscoreForGameMode(mode: GameModes) -> (Double){
-        return 0.0
+        return AppDelegate.defaults.doubleForKey("\(mode.rawValue)Highscore")
+    }
+    
+    class func setHighscoreForGameMode(mode: GameModes, newScore: Double) -> () {
+        AppDelegate.defaults.setDouble(newScore, forKey: "\(mode.rawValue)Highscore")
+    }
+    
+    // Format the score to show it on the label
+    class func formatScore(score: Double) -> (String) {
+            let formatString = "%.3f"
+            return String(format: formatString, arguments: [score])
     }
     
     class func calculateScoreForGameMode(mode: GameModes?, currentScore: Double, currentTime: NSTimeInterval?, startTime: NSTimeInterval?) -> (Double) {

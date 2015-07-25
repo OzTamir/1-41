@@ -26,6 +26,7 @@ extension GameplayScene {
         let transition = SKTransition.pushWithDirection(.Left, duration: 0.75)
         let gameoverScene = GameoverScene(fileNamed: "GameoverScene")
         gameoverScene.score = self.score
+        gameoverScene.mode = self.gameMode
         self.view?.presentScene(gameoverScene, transition: transition)
     }
     
@@ -149,12 +150,6 @@ extension GameplayScene {
         self.view?.presentScene(gameplayScene, transition: transition)
     }
     
-    // Format the score to show it on the label
-    func formatScore(score: Double) -> (String) {
-        let formatString = "%.3f"
-        return String(format: formatString, arguments: [score])
-    }
-    
     // Animate a change in the score
     func updateScore() -> () {
         let animationScale = 2.0
@@ -169,7 +164,7 @@ extension GameplayScene {
             return
         }
         self.score = newScore
-        let changeText = SKAction.runBlock() { self.setLabelText("scoreCounter", text: self.formatScore(newScore)) }
+        let changeText = SKAction.runBlock() { self.setLabelText("scoreCounter", text: ScoreManager.formatScore(newScore)) }
         let revertAnimation = SKAction.scaleTo(CGFloat(1), duration: 0.25)
         let completeAction = SKAction.sequence([scoreAnimation, changeText, revertAnimation])
         
