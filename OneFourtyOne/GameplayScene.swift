@@ -19,6 +19,16 @@ class GameplayScene: SKScene {
     /* -- Timer Properties -- */
     var time : NSTimeInterval?
     var currentTime : NSTimeInterval?
+    var timeDelta : Double? {
+        get {
+            if let current = self.currentTime {
+                if let start = self.time {
+                    return current - start
+                }
+            }
+            return nil
+        }
+    }
     // Whether the actual game has started
     var started = false
     // Time before the buttons are revealed
@@ -52,7 +62,12 @@ class GameplayScene: SKScene {
         let timeLabel = childNodeWithName("timeLabel") as! SKLabelNode
         // If the session has started, show the time from start
         if started {
-            timeLabel.text = String(format: "%.2f", arguments: [currentTime - self.time!])
+            let timeRemaining = ScoreManager.goalTime - (currentTime - self.time!)
+            if timeRemaining < 0.0 {
+                    timeLabel.text = "Too Late!"
+            } else {
+                timeLabel.text = String(format: "%.2f", arguments: [timeRemaining])
+            }
         } else {
             // else show the time until the session will start
             timeLabel.text = String(format: "%.0f", arguments: [self.thinkTimeCounter! - currentTime])
@@ -68,24 +83,7 @@ class GameplayScene: SKScene {
         
     }
     
-    func checkPress(color: String) -> () {
-        let debugLabel = childNodeWithName("debugLabel") as! SKLabelNode
-        
-        // Change the score and the label accordinaly
-        if color == self.targetColor {
-            debugLabel.text = "CORRECT!"
-            setLabelText("timeLabel", text: "Correct!")
-            updateScore()
-        } else {
-            decreaseHeart()
-            if self.lives == 1 {
-                gameover()
-            }
-            self.lives -= 1
-            setLabelText("timeLabel", text: "False!")
-            debugLabel.text = "FALSE!"
-        }
-        
+    func startNewLevel() -> () {
         // Start a new level
         self.time = nil
         self.thinkTimeCounter = nil
@@ -93,6 +91,28 @@ class GameplayScene: SKScene {
         initDialog()
         setBlocker(false, zPos: 4)
         initButtons()
+    }
+    
+    func checkPress(color: String) -> () {
+        let debugLabel = childNodeWithName("debugLabel") as! SKLabelNode
+        
+        // Change the score and the label accordinaly
+        if self.timeDelta! > ScoreManager.goalTime  && self.gameMode! == .Countdown{
+            setLabelText("timeLabel", text: "Too late!")
+            decreaseHeart()
+            debugLabel.text = "Time: \(self.timeDelta)"
+        }
+        else if color == self.targetColor {
+            debugLabel.text = "CORRECT!"
+            setLabelText("timeLabel", text: "Correct!")
+            updateScore()
+        } else {
+            decreaseHeart()
+            setLabelText("timeLabel", text: "False!")
+            debugLabel.text = "FALSE!"
+        }
+        
+        startNewLevel()
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {

@@ -23,8 +23,8 @@ class ScoreManager {
                     return self.calculateArcadeScore(currentScore, currentTime: currentTime, startTime: startTime)
                 case .Speed:
                     return self.calculateSpeedScore(currentScore, currentTime: currentTime, startTime: startTime)
-                case .Practice:
-                    return self.calculatePracticeScore(currentScore, currentTime: currentTime, startTime: startTime)
+                case .Countdown:
+                    return self.calculateCountdownScore(currentScore, currentTime: currentTime, startTime: startTime)
                 default:
                     break
             }
@@ -54,7 +54,7 @@ class ScoreManager {
         
     }
     
-    class private func calculatePracticeScore(currentScore: Double, currentTime: NSTimeInterval?, startTime: NSTimeInterval?) -> (Double) {
+    class private func calculateCountdownScore(currentScore: Double, currentTime: NSTimeInterval?, startTime: NSTimeInterval?) -> (Double) {
         return calculateArcadeScore(currentScore, currentTime: currentTime, startTime: startTime)
     }
 }

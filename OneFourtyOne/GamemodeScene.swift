@@ -12,7 +12,7 @@ import SpriteKit
 enum GameModes {
     case Speed
     case Arcade
-    case Practice
+    case Countdown
 }
 
 class GamemodeScene: SKScene {
@@ -22,6 +22,9 @@ class GamemodeScene: SKScene {
         
         let speedHSLabel = childNodeWithName("speedHighScoreLabel") as! SKLabelNode
         speedHSLabel.text = "\(ScoreManager.getHighscoreForGameMode(.Speed))"
+        
+        let countdownHSLabel = childNodeWithName("speedHighScoreLabel") as! SKLabelNode
+        countdownHSLabel.text = "\(ScoreManager.getHighscoreForGameMode(.Countdown))"
     }
     
     func startGame(mode: GameModes) -> () {
@@ -44,8 +47,8 @@ class GamemodeScene: SKScene {
                     startGame(.Speed)
                 case "arcadeModeButton", "arcadeModeLabel":
                     startGame(.Arcade)
-                case "practiceModeButton", "practiceModeLabel":
-                    startGame(.Practice)
+                case "countdownModeButton", "countdownModeLabel":
+                    startGame(.Countdown)
                 default:
                     break
             }
