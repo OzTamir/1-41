@@ -12,8 +12,8 @@ import SpriteKit
 extension SKNode {
     class func unarchiveFromFile(file : String) -> SKNode? {
         if let path = NSBundle.mainBundle().pathForResource(file, ofType: "sks") {
-            var sceneData = NSData(contentsOfFile: path, options: .DataReadingMappedIfSafe, error: nil)!
-            var archiver = NSKeyedUnarchiver(forReadingWithData: sceneData)
+            let sceneData = try! NSData(contentsOfFile: path, options: .DataReadingMappedIfSafe)
+            let archiver = NSKeyedUnarchiver(forReadingWithData: sceneData)
             
             archiver.setClass(self.classForKeyedUnarchiver(), forClassName: "SKScene")
             let scene = archiver.decodeObjectForKey(NSKeyedArchiveRootObjectKey) as! MenuScene
@@ -29,7 +29,7 @@ class GameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "pauseGame", name: "PauseGameScene", object: nil)
         if let scene = MenuScene.unarchiveFromFile("MenuScene") as? MenuScene {
             // Configure the view.
             let skView = self.view as! SKView
@@ -45,13 +45,26 @@ class GameViewController: UIViewController {
             skView.presentScene(scene)
         }
     }
+    
+    @objc func pauseGame() -> () {
+        let skView = self.view as! SKView
+        if let gameplayScene = skView.scene as? GameplayScene {
+            let transition = SKTransition.pushWithDirection(.Up, duration: 0.0)
+            let pauseScene = PauseScene(fileNamed: "PauseScene")!
+            pauseScene.currentGameMode = gameplayScene.gameMode
+            pauseScene.currentLives = gameplayScene.lives
+            pauseScene.currentScore = gameplayScene.score
+            pauseScene.scaleMode = .Fill
+            gameplayScene.view?.presentScene(pauseScene, transition: transition)
+        }
+    }
 
     override func shouldAutorotate() -> Bool {
         return true
     }
 
-    override func supportedInterfaceOrientations() -> Int {
-        return Int(UIInterfaceOrientationMask.LandscapeLeft.rawValue)
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.LandscapeLeft
     }
 
     override func didReceiveMemoryWarning() {

@@ -32,7 +32,8 @@ class GamemodeScene: SKScene {
     
     func startGame(mode: GameModes) -> () {
         let transition = SKTransition.pushWithDirection(.Down, duration: AppDelegate.animationDuration)
-        let gameplayScene = GameplayScene(fileNamed: "GameplayScene")
+        let gameplayScene = GameplayScene(fileNamed: "GameplayScene")!
+        gameplayScene.scaleMode = SKSceneScaleMode.Fill
         gameplayScene.gameMode = mode
         self.view?.presentScene(gameplayScene, transition: transition)
     }
@@ -40,14 +41,15 @@ class GamemodeScene: SKScene {
     // Called when the back button is pressed
     func backToMenu() -> () {
         let transition = SKTransition.pushWithDirection(.Right, duration: AppDelegate.animationDuration)
-        let gameplayScene = MenuScene(fileNamed: "MenuScene")
+        let gameplayScene = MenuScene(fileNamed: "MenuScene")!
+        gameplayScene.scaleMode = SKSceneScaleMode.Fill
         self.view?.presentScene(gameplayScene, transition: transition)
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         /* Called when a touch begins */
         
-        let touch = touches.first as! UITouch
+        let touch = touches.first!
         let location = touch.locationInNode(self)
         let node = self.nodeAtPoint(location)
         

@@ -19,10 +19,10 @@ class MenuScene: SKScene {
 //        self.addChild(myLabel)
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         /* Called when a touch begins */
         
-        let touch = touches.first as! UITouch
+        let touch = touches.first!
         let location = touch.locationInNode(self)
         let node = self.nodeAtPoint(location)
         
@@ -30,11 +30,13 @@ class MenuScene: SKScene {
             switch name {
                 case "startButton", "startLabel":
                     let transition = SKTransition.pushWithDirection(.Left, duration: AppDelegate.animationDuration)
-                    let gamemodeScene = GamemodeScene(fileNamed: "GamemodeScene")
+                    let gamemodeScene = GamemodeScene(fileNamed: "GamemodeScene")!
+                    gamemodeScene.scaleMode = SKSceneScaleMode.Fill
                     self.view?.presentScene(gamemodeScene, transition: transition)
                 case "optionsButton", "optionsLabel":
                     let transition = SKTransition.pushWithDirection(.Up, duration: AppDelegate.animationDuration)
-                    let gameplayScene = OptionsScene(fileNamed: "OptionsScene")
+                    let gameplayScene = OptionsScene(fileNamed: "OptionsScene")!
+                    gameplayScene.scaleMode = SKSceneScaleMode.Fill
                     self.view?.presentScene(gameplayScene, transition: transition)
                 case "titleLabel":
                     animateTitleOnTouch()

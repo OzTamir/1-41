@@ -16,11 +16,12 @@ class PauseScene: SKScene {
  
     func resumeGame() -> () {
         let transition = SKTransition.pushWithDirection(.Down, duration: AppDelegate.animationDuration)
-        let gameplayScene = GameplayScene(fileNamed: "GameplayScene")
+        let gameplayScene = GameplayScene(fileNamed: "GameplayScene")!
         gameplayScene.lives = self.currentLives!
         gameplayScene.score = self.currentScore!
         gameplayScene.gameMode = self.currentGameMode
         gameplayScene.returnedFromPause = true
+        gameplayScene.scaleMode = SKSceneScaleMode.Fill
         self.view?.presentScene(gameplayScene, transition: transition)
     }
     
@@ -28,13 +29,14 @@ class PauseScene: SKScene {
     func backToMenu() -> () {
         // TODO: Add "Are You Sure?" dialog
         let transition = SKTransition.pushWithDirection(.Up, duration: AppDelegate.animationDuration)
-        let gameplayScene = MenuScene(fileNamed: "MenuScene")
+        let gameplayScene = MenuScene(fileNamed: "MenuScene")!
+        gameplayScene.scaleMode = SKSceneScaleMode.Fill
         self.view?.presentScene(gameplayScene, transition: transition)
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         // Get the node that was pressed
-        let touch = touches.first as! UITouch
+        let touch = touches.first!
         let location = touch.locationInNode(self)
         let node = self.nodeAtPoint(location)
         

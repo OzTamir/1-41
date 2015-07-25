@@ -23,10 +23,10 @@ extension GameplayScene {
     
     // Decrease the lives GUI and change the score when resuming a game
     func resumeGame() -> () {
-        var livesToDecrease = self.maxLives - self.lives
+        let livesToDecrease = self.maxLives - self.lives
         self.lives = self.maxLives
         for _ in 0..<livesToDecrease {
-            decreaseHeart(animate: false)
+            decreaseHeart(false)
         }
         setLabelText("scoreCounter", text: ScoreManager.formatScore(self.score))
         self.returnedFromPause = false
@@ -35,7 +35,8 @@ extension GameplayScene {
     // Present the "Game Over" screen
     func gameover() -> () {
         let transition = SKTransition.pushWithDirection(.Left, duration: 0.25)
-        let gameoverScene = GameoverScene(fileNamed: "GameoverScene")
+        let gameoverScene = GameoverScene(fileNamed: "GameoverScene")!
+        gameoverScene.scaleMode = SKSceneScaleMode.Fill
         gameoverScene.score = self.score
         gameoverScene.mode = self.gameMode
         self.view?.presentScene(gameoverScene, transition: transition)
@@ -76,9 +77,9 @@ extension GameplayScene {
     
     // Get a random color
     func getRandomColor() -> UIColor{
-        var randomRed:CGFloat = CGFloat(drand48())
-        var randomGreen:CGFloat = CGFloat(drand48())
-        var randomBlue:CGFloat = CGFloat(drand48())
+        let randomRed:CGFloat = CGFloat(drand48())
+        let randomGreen:CGFloat = CGFloat(drand48())
+        let randomBlue:CGFloat = CGFloat(drand48())
         return UIColor(red: randomRed, green: randomGreen, blue: randomBlue, alpha: 1.0)
     }
     
@@ -159,7 +160,8 @@ extension GameplayScene {
     
     func pauseGame() -> () {
         let transition = SKTransition.pushWithDirection(.Up, duration: AppDelegate.animationDuration)
-        let pauseScene = PauseScene(fileNamed: "PauseScene")
+        let pauseScene = PauseScene(fileNamed: "PauseScene")!
+        pauseScene.scaleMode = SKSceneScaleMode.Fill
         pauseScene.currentGameMode = self.gameMode
         pauseScene.currentLives = self.lives
         pauseScene.currentScore = self.score

@@ -28,9 +28,9 @@ class OptionsScene: SKScene {
         resetLabel.runAction(animationSequence)
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         // Get the node that was pressed
-        let touch = touches.first as! UITouch
+        let touch = touches.first!
         let location = touch.locationInNode(self)
         let node = self.nodeAtPoint(location)
 
@@ -51,7 +51,8 @@ class OptionsScene: SKScene {
     func backToMenu() -> () {
         // TODO: Add "Are You Sure?" dialog
         let transition = SKTransition.pushWithDirection(.Down, duration: AppDelegate.animationDuration)
-        let gameplayScene = MenuScene(fileNamed: "MenuScene")
+        let gameplayScene = MenuScene(fileNamed: "MenuScene")!
+        gameplayScene.scaleMode = SKSceneScaleMode.Fill
         self.view?.presentScene(gameplayScene, transition: transition)
     }
 }
