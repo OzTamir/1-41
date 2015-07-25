@@ -145,9 +145,15 @@ extension GameplayScene {
     }
     
     // Animate a change in the score
-    func changeScore(scoreChange: Double, scoreAnimation: Double) {
-        let scoreAnimation = SKAction.scaleTo(CGFloat(scoreAnimation), duration: 0.25)
-        let newScore = max(self.score + scoreChange, 0)
+    func updateScore() -> () {
+        let animationScale = 2.0
+        let scoreAnimation = SKAction.scaleTo(CGFloat(animationScale), duration: 0.25)
+        let newScore = ScoreManager.calculateScoreForGameMode(
+            self.gameMode,
+            currentScore: self.score,
+            currentTime: self.currentTime,
+            startTime: self.time
+        )
         if newScore == self.score {
             return
         }

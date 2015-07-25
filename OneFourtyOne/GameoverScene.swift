@@ -23,8 +23,8 @@ class GameoverScene: SKScene {
     
     func newGame() -> () {
         let transition = SKTransition.pushWithDirection(.Right, duration: 0.75)
-        let gameplayScene = GameplayScene(fileNamed: "GameplayScene")
-        self.view?.presentScene(gameplayScene, transition: transition)
+        let gamemodeScene = GamemodeScene(fileNamed: "GamemodeScene")
+        self.view?.presentScene(gamemodeScene, transition: transition)
     }
     
     // Called when the back button is pressed

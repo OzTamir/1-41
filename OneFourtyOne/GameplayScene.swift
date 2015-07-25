@@ -11,20 +11,25 @@ import UIKit
 import SpriteKit
 
 class GameplayScene: SKScene {
+    /* -- Color managment properties -- */
     let colors = ["Green", "Red", "Blue", "Yellow", "White", "Black", "Purple", "Pink", "Brown", "Orange"]
     var nodeColors = [String]()
     var targetColor : String?
+    
+    /* -- Timer Properties -- */
     var time : NSTimeInterval?
     var currentTime : NSTimeInterval?
+    // Whether the actual game has started
     var started = false
-    var running = true
-    let goalTime = 1.41
-    var score = 0.0
-    var lives = 3
-
     // Time before the buttons are revealed
     let thinkTime = 4.0
     var thinkTimeCounter : NSTimeInterval?
+    
+    /* -- Game settings properties -- */
+    let goalTime = 1.41
+    var score = 0.0
+    var lives = 3
+    var gameMode : GameModes?
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
@@ -44,25 +49,21 @@ class GameplayScene: SKScene {
             self.thinkTimeCounter = self.time?.advancedBy(self.thinkTime)
         }
         
-        // If the current game session is running
-        if running {
-            let timeLabel = childNodeWithName("timeLabel") as! SKLabelNode
-            // If the session has started, show the time from start
-            if started {
-                timeLabel.text = String(format: "%.2f", arguments: [currentTime - self.time!])
-            }
+        let timeLabel = childNodeWithName("timeLabel") as! SKLabelNode
+        // If the session has started, show the time from start
+        if started {
+            timeLabel.text = String(format: "%.2f", arguments: [currentTime - self.time!])
+        } else {
             // else show the time until the session will start
-            else {
-                timeLabel.text = String(format: "%.0f", arguments: [self.thinkTimeCounter! - currentTime])
-            }
-            
-            // When the pre-session screen should disappear
-            if (self.thinkTimeCounter! - currentTime) < 0.0 && !started {
-                self.started = true
-                self.time = currentTime
-                setBlocker(true, zPos: 0)
-                timeLabel.text = "GO"
-            }
+            timeLabel.text = String(format: "%.0f", arguments: [self.thinkTimeCounter! - currentTime])
+        }
+        
+        // When the pre-session screen should disappear
+        if (self.thinkTimeCounter! - currentTime) < 0.0 && !started {
+            self.started = true
+            self.time = currentTime
+            setBlocker(true, zPos: 0)
+            timeLabel.text = "GO"
         }
         
     }
@@ -74,9 +75,8 @@ class GameplayScene: SKScene {
         if color == self.targetColor {
             debugLabel.text = "CORRECT!"
             setLabelText("timeLabel", text: "Correct!")
-            changeScore(calculateScore(), scoreAnimation: 2.0)
-        }
-        else {
+            updateScore()
+        } else {
             decreaseHeart()
             if self.lives == 1 {
                 gameover()
@@ -93,16 +93,6 @@ class GameplayScene: SKScene {
         initDialog()
         setBlocker(false, zPos: 4)
         initButtons()
-    }
-    
-    func calculateScore() -> (Double) {
-        let timeDelta = self.currentTime! - self.time!
-        if timeDelta > self.goalTime {
-            return 0
-        }
-        // I didn't just returned the expression because I'm sure the scoring system is due to changes
-        let newScore = Double(Int(timeDelta * 10)) / 10.0
-        return newScore
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
@@ -130,8 +120,7 @@ class GameplayScene: SKScene {
                 default:
                     break
             }
-        }
-        else {
+        } else {
             debugLabel.text = "NOTHING"
         }
     }
