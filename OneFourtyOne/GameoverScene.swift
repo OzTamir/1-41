@@ -42,14 +42,14 @@ class GameoverScene: SKScene {
     }
     
     func newGame() -> () {
-        let transition = SKTransition.pushWithDirection(.Right, duration: 0.75)
+        let transition = SKTransition.pushWithDirection(.Right, duration: AppDelegate.animationDuration)
         let gamemodeScene = GamemodeScene(fileNamed: "GamemodeScene")
         self.view?.presentScene(gamemodeScene, transition: transition)
     }
     
     // Called when the back button is pressed
     func backToMenu() -> () {
-        let transition = SKTransition.pushWithDirection(.Down, duration: 0.75)
+        let transition = SKTransition.pushWithDirection(.Down, duration: AppDelegate.animationDuration)
         let menuScreen = MenuScene(fileNamed: "MenuScene")
         self.view?.presentScene(menuScreen, transition: transition)
     }

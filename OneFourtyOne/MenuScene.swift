@@ -29,11 +29,11 @@ class MenuScene: SKScene {
         if let name = node.name {
             switch name {
                 case "startButton", "startLabel":
-                    let transition = SKTransition.pushWithDirection(.Left, duration: 0.75)
+                    let transition = SKTransition.pushWithDirection(.Left, duration: AppDelegate.animationDuration)
                     let gamemodeScene = GamemodeScene(fileNamed: "GamemodeScene")
                     self.view?.presentScene(gamemodeScene, transition: transition)
                 case "optionsButton", "optionsLabel":
-                    let transition = SKTransition.pushWithDirection(.Up, duration: 0.75)
+                    let transition = SKTransition.pushWithDirection(.Up, duration: AppDelegate.animationDuration)
                     let gameplayScene = OptionsScene(fileNamed: "OptionsScene")
                     self.view?.presentScene(gameplayScene, transition: transition)
                 case "titleLabel":

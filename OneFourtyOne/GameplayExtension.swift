@@ -21,9 +21,20 @@ import SpriteKit
 
 extension GameplayScene {
     
+    // Decrease the lives GUI and change the score when resuming a game
+    func resumeGame() -> () {
+        var livesToDecrease = self.maxLives - self.lives
+        self.lives = self.maxLives
+        for _ in 0..<livesToDecrease {
+            decreaseHeart(animate: false)
+        }
+        setLabelText("scoreCounter", text: ScoreManager.formatScore(self.score))
+        self.returnedFromPause = false
+    }
+    
     // Present the "Game Over" screen
     func gameover() -> () {
-        let transition = SKTransition.pushWithDirection(.Left, duration: 0.75)
+        let transition = SKTransition.pushWithDirection(.Left, duration: 0.25)
         let gameoverScene = GameoverScene(fileNamed: "GameoverScene")
         gameoverScene.score = self.score
         gameoverScene.mode = self.gameMode
@@ -31,7 +42,7 @@ extension GameplayScene {
     }
     
     // Change a full heart to an empty heart
-    func decreaseHeart() -> () {
+    func decreaseHeart(animate: Bool = true) -> () {
         let heart = childNodeWithName("heart\(self.lives)")
         let shrinkAnimation = SKAction.scaleTo(0.5, duration: 0.25)
         let changeTexture = SKAction.setTexture(SKTexture(imageNamed: "heart_icon_empty_80px"), resize: false)
@@ -41,7 +52,11 @@ extension GameplayScene {
             changeTexture,
             revertAnimation
         ])
-        heart?.runAction(animationSequence)
+        if animate {
+            heart?.runAction(animationSequence)
+        } else {
+            heart?.runAction(changeTexture)
+        }
         
         if self.lives == 1 {
             gameover()
@@ -142,12 +157,13 @@ extension GameplayScene {
         instructionLabel.zPosition = CGFloat(zPos)
     }
     
-    // Called when the back button is pressed
-    func backToMenu() -> () {
-        // TODO: Add "Are You Sure?" dialog
-        let transition = SKTransition.pushWithDirection(.Up, duration: 0.75)
-        let gameplayScene = MenuScene(fileNamed: "MenuScene")
-        self.view?.presentScene(gameplayScene, transition: transition)
+    func pauseGame() -> () {
+        let transition = SKTransition.pushWithDirection(.Up, duration: AppDelegate.animationDuration)
+        let pauseScene = PauseScene(fileNamed: "PauseScene")
+        pauseScene.currentGameMode = self.gameMode
+        pauseScene.currentLives = self.lives
+        pauseScene.currentScore = self.score
+        self.view?.presentScene(pauseScene, transition: transition)
     }
     
     // Animate a change in the score

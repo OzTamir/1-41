@@ -12,6 +12,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     static let defaults = NSUserDefaults.standardUserDefaults()
+    static let animationDuration = 0.5
     var window: UIWindow?
 
 

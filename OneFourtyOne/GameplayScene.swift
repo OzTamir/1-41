@@ -38,10 +38,16 @@ class GameplayScene: SKScene {
     /* -- Game settings properties -- */
     let goalTime = 1.41
     var score = 0.0
+    let maxLives = 3
     var lives = 3
+    var returnedFromPause = false
     var gameMode : GameModes?
     
     override func didMoveToView(view: SKView) {
+        if self.returnedFromPause {
+            self.resumeGame()
+        }
+        
         /* Setup your scene here */
         setLabelText("colorLabel", text: "")
         
@@ -135,8 +141,8 @@ class GameplayScene: SKScene {
                 case "downLeftButton", "downLeftLabel":
                     checkPress(self.nodeColors[3])
                 // case ask to go back
-                case "backButton", "backLabel":
-                    backToMenu()
+                case "pauseButton", "pauseLabel":
+                    pauseGame()
                 default:
                     break
             }

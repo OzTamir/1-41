@@ -31,7 +31,7 @@ class GamemodeScene: SKScene {
     }
     
     func startGame(mode: GameModes) -> () {
-        let transition = SKTransition.pushWithDirection(.Down, duration: 0.75)
+        let transition = SKTransition.pushWithDirection(.Down, duration: AppDelegate.animationDuration)
         let gameplayScene = GameplayScene(fileNamed: "GameplayScene")
         gameplayScene.gameMode = mode
         self.view?.presentScene(gameplayScene, transition: transition)
@@ -39,7 +39,7 @@ class GamemodeScene: SKScene {
     
     // Called when the back button is pressed
     func backToMenu() -> () {
-        let transition = SKTransition.pushWithDirection(.Right, duration: 0.75)
+        let transition = SKTransition.pushWithDirection(.Right, duration: AppDelegate.animationDuration)
         let gameplayScene = MenuScene(fileNamed: "MenuScene")
         self.view?.presentScene(gameplayScene, transition: transition)
     }

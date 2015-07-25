@@ -50,7 +50,7 @@ class OptionsScene: SKScene {
     // Called when the back button is pressed
     func backToMenu() -> () {
         // TODO: Add "Are You Sure?" dialog
-        let transition = SKTransition.pushWithDirection(.Down, duration: 0.75)
+        let transition = SKTransition.pushWithDirection(.Down, duration: AppDelegate.animationDuration)
         let gameplayScene = MenuScene(fileNamed: "MenuScene")
         self.view?.presentScene(gameplayScene, transition: transition)
     }

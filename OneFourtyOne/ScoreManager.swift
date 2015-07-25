@@ -54,7 +54,7 @@ class ScoreManager {
             return currentScore
         }
         // I didn't just returned the expression because I'm sure the scoring system is due to changes
-        let addition = Double(Int(timeDelta * 10)) / 10.0
+        let addition = Double(Int(timeDelta * 1000)) / 1000.0
         return addition + currentScore
     }
     
