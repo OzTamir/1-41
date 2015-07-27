@@ -38,7 +38,7 @@ extension GameplayScene {
         let gameoverScene = GameoverScene(fileNamed: "GameoverScene")
         gameoverScene.score = self.score
         gameoverScene.mode = self.gameMode
-        gameoverScene.scaleMode = .Fill
+        gameoverScene.scaleMode = AppDelegate.sceneScaleMode
         self.view?.presentScene(gameoverScene, transition: transition)
     }
     
@@ -72,7 +72,8 @@ extension GameplayScene {
         let arrayKey = Int(arc4random_uniform(UInt32(self.colors.count)))
         self.targetColor = colors[arrayKey]
         
-        setLabelText("instructionLabel", text: "Press the button that says \(self.targetColor!)")
+        setLabelText("instructionLabel", text: "Press the button that says")
+        setLabelText("colorLabel", text: self.targetColor!)
     }
     
     // Get a random color
@@ -117,8 +118,6 @@ extension GameplayScene {
     // Initialize the buttons, the labels and the colors
     func initButtons() -> () {
         self.nodeColors = []
-        
-        setLabelText("colorLabel", text: self.targetColor!)
         var items = getColors()
         
         // Init the up-right button/label
@@ -149,13 +148,10 @@ extension GameplayScene {
     // Show/Hide the "Press the button..." dialog
     func setBlocker(hidden: Bool, zPos: Int) -> () {
         let buttonsBlocker = childNodeWithName("buttonsBlocker")
-        let instructionLabel = childNodeWithName("instructionLabel") as! SKLabelNode
         
         // Hide the blockers and send 'em to the back
         buttonsBlocker?.hidden = hidden
         buttonsBlocker?.zPosition = CGFloat(zPos - 1)
-        instructionLabel.hidden = hidden
-        instructionLabel.zPosition = CGFloat(zPos)
     }
     
     func pauseGame() -> () {
@@ -164,7 +160,7 @@ extension GameplayScene {
         pauseScene.currentGameMode = self.gameMode
         pauseScene.currentLives = self.lives
         pauseScene.currentScore = self.score
-        pauseScene.scaleMode = .Fill
+        pauseScene.scaleMode = AppDelegate.sceneScaleMode
         self.view?.presentScene(pauseScene, transition: transition)
     }
     

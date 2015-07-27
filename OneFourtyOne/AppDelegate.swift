@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import SpriteKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     static let defaults = NSUserDefaults.standardUserDefaults()
     static let animationDuration = 0.5
+    static let sceneScaleMode = SKSceneScaleMode.AspectFill
     var window: UIWindow?
 
 

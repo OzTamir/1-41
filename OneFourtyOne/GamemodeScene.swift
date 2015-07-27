@@ -17,16 +17,16 @@ enum GameModes : String {
 
 class GamemodeScene: SKScene {
     override func didMoveToView(view: SKView) {
-        let arcadeHSLabel = childNodeWithName("arcadeHighScoreLabel") as! SKLabelNode
+        let arcadeHSLabel = childNodeWithName("arcadeModeButton")?.childNodeWithName("arcadeHSLabel")?.childNodeWithName("arcadeHSCounter") as! SKLabelNode
         arcadeHSLabel.text = ScoreManager.formatScore(ScoreManager.getHighscoreForGameMode(.Arcade))
         
-        let speedHSLabel = childNodeWithName("speedHighScoreLabel") as! SKLabelNode
+        let speedHSLabel = childNodeWithName("speedModeButton")?.childNodeWithName("speedHSLabel")?.childNodeWithName("speedHSCounter") as! SKLabelNode
         speedHSLabel.text = ScoreManager.formatScore(ScoreManager.getHighscoreForGameMode(.Speed))
         if speedHSLabel.text == ScoreManager.formatScore(1.42) {
             speedHSLabel.text = ScoreManager.formatScore(0.0)
         }
         
-        let countdownHSLabel = childNodeWithName("countdownHighScoreLabel") as! SKLabelNode
+        let countdownHSLabel = childNodeWithName("countdownModeButton")?.childNodeWithName("countdownHSLabel")?.childNodeWithName("countdownHSCounter") as! SKLabelNode
         countdownHSLabel.text = ScoreManager.formatScore(ScoreManager.getHighscoreForGameMode(.Countdown))
     }
     
@@ -34,7 +34,7 @@ class GamemodeScene: SKScene {
         let transition = SKTransition.pushWithDirection(.Down, duration: AppDelegate.animationDuration)
         let gameplayScene = GameplayScene(fileNamed: "GameplayScene")
         gameplayScene.gameMode = mode
-        gameplayScene.scaleMode = .Fill
+        gameplayScene.scaleMode = AppDelegate.sceneScaleMode
         self.view?.presentScene(gameplayScene, transition: transition)
     }
     
@@ -42,7 +42,7 @@ class GamemodeScene: SKScene {
     func backToMenu() -> () {
         let transition = SKTransition.pushWithDirection(.Right, duration: AppDelegate.animationDuration)
         let menuScene = MenuScene(fileNamed: "MenuScene")
-        menuScene.scaleMode = .Fill
+        menuScene.scaleMode = AppDelegate.sceneScaleMode
         self.view?.presentScene(menuScene, transition: transition)
     }
     

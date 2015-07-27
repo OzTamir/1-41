@@ -40,7 +40,7 @@ class GameViewController: UIViewController {
             skView.ignoresSiblingOrder = true
             
             /* Set the scale mode to scale to fit the window */
-            scene.scaleMode = .AspectFill
+            scene.scaleMode = AppDelegate.sceneScaleMode
             
             skView.presentScene(scene)
         }
@@ -54,7 +54,7 @@ class GameViewController: UIViewController {
             pauseScene.currentGameMode = gameplayScene.gameMode
             pauseScene.currentLives = gameplayScene.lives
             pauseScene.currentScore = gameplayScene.score
-            pauseScene.scaleMode = .Fill
+            pauseScene.scaleMode = AppDelegate.sceneScaleMode
             gameplayScene.view?.presentScene(pauseScene, transition: transition)
         }
     }
@@ -64,7 +64,12 @@ class GameViewController: UIViewController {
     }
 
     override func supportedInterfaceOrientations() -> Int {
-        return Int(UIInterfaceOrientationMask.LandscapeLeft.rawValue)
+        // TODO: NOTE WE HAVE A FALSE AND HERE
+        if false && UIDevice.currentDevice().userInterfaceIdiom == .Phone {
+            return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
+        } else {
+            return Int(UIInterfaceOrientationMask.All.rawValue)
+        }
     }
 
     override func didReceiveMemoryWarning() {

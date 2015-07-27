@@ -44,7 +44,7 @@ class GameoverScene: SKScene {
     func newGame() -> () {
         let transition = SKTransition.pushWithDirection(.Right, duration: AppDelegate.animationDuration)
         let gamemodeScene = GamemodeScene(fileNamed: "GamemodeScene")
-        gamemodeScene.scaleMode = .Fill
+        gamemodeScene.scaleMode = AppDelegate.sceneScaleMode
         self.view?.presentScene(gamemodeScene, transition: transition)
     }
     
@@ -52,7 +52,7 @@ class GameoverScene: SKScene {
     func backToMenu() -> () {
         let transition = SKTransition.pushWithDirection(.Down, duration: AppDelegate.animationDuration)
         let menuScene = MenuScene(fileNamed: "MenuScene")
-        menuScene.scaleMode = .Fill
+        menuScene.scaleMode = AppDelegate.sceneScaleMode
         self.view?.presentScene(menuScene, transition: transition)
     }
     

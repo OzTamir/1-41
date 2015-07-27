@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F5406D6A1B66893B00B5E147 /* SKUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5406D691B66893B00B5E147 /* SKUtils.swift */; };
 		F576910E1B62602C004E37C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F576910D1B62602C004E37C1 /* AppDelegate.swift */; };
 		F57691101B62602C004E37C1 /* MenuScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = F576910F1B62602C004E37C1 /* MenuScene.sks */; };
 		F57691121B62602C004E37C1 /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57691111B62602C004E37C1 /* MenuScene.swift */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F5406D691B66893B00B5E147 /* SKUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKUtils.swift; sourceTree = "<group>"; };
 		F57691081B62602C004E37C1 /* OneFourtyOne.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneFourtyOne.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F576910C1B62602C004E37C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F576910D1B62602C004E37C1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				F59049131B63A81B00352C74 /* GamemodeScene.swift */,
 				F5CD56A71B63B093009D63AA /* ScoreManager.swift */,
 				F57691111B62602C004E37C1 /* MenuScene.swift */,
+				F5406D691B66893B00B5E147 /* SKUtils.swift */,
 				F590490B1B6381C900352C74 /* OptionsScene.swift */,
 				F590490F1B638CDD00352C74 /* GameoverScene.swift */,
 				F57691311B62618B004E37C1 /* GameplayScene.swift */,
@@ -261,6 +264,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5406D6A1B66893B00B5E147 /* SKUtils.swift in Sources */,
 				F57691321B62618B004E37C1 /* GameplayScene.swift in Sources */,
 				F57691121B62602C004E37C1 /* MenuScene.swift in Sources */,
 				F59049101B638CDD00352C74 /* GameoverScene.swift in Sources */,

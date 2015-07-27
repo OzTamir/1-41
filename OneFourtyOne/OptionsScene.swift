@@ -52,7 +52,7 @@ class OptionsScene: SKScene {
         // TODO: Add "Are You Sure?" dialog
         let transition = SKTransition.pushWithDirection(.Down, duration: AppDelegate.animationDuration)
         let menuScene = MenuScene(fileNamed: "MenuScene")
-        menuScene.scaleMode = .Fill
+        menuScene.scaleMode = AppDelegate.sceneScaleMode
         self.view?.presentScene(menuScene, transition: transition)
     }
 }
