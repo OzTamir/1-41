@@ -147,11 +147,10 @@ extension GameplayScene {
     
     // Show/Hide the "Press the button..." dialog
     func setBlocker(hidden: Bool, zPos: Int) -> () {
-        let buttonsBlocker = childNodeWithName("buttonsBlocker")
+        let buttonsArea = childNodeWithName("buttonsArea")
         
         // Hide the blockers and send 'em to the back
-        buttonsBlocker?.hidden = hidden
-        buttonsBlocker?.zPosition = CGFloat(zPos - 1)
+        buttonsArea?.zPosition = CGFloat(zPos - 1)
     }
     
     func pauseGame() -> () {

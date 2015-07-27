@@ -21,6 +21,7 @@ class PauseScene: SKScene {
         gameplayScene.score = self.currentScore!
         gameplayScene.gameMode = self.currentGameMode
         gameplayScene.returnedFromPause = true
+        gameplayScene.scaleMode = AppDelegate.sceneScaleMode
         self.view?.presentScene(gameplayScene, transition: transition)
     }
     

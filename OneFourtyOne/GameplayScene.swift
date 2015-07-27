@@ -34,6 +34,8 @@ class GameplayScene: SKScene {
     // Time before the buttons are revealed
     let thinkTime = 4.0
     var thinkTimeCounter : NSTimeInterval?
+    // Whether we are overtime and should ignore touches
+    var overtime = false
     
     /* -- Game settings properties -- */
     let goalTime = 1.41
@@ -42,6 +44,7 @@ class GameplayScene: SKScene {
     var lives = 3
     var returnedFromPause = false
     var gameMode : GameModes?
+    let foregroundZPosition = 4
     
     override func didMoveToView(view: SKView) {
         if self.returnedFromPause {
@@ -57,6 +60,10 @@ class GameplayScene: SKScene {
     }
     
     override func update(currentTime: NSTimeInterval) {
+        if overtime {
+            return
+        }
+        
         // Set the object's currentTime property
         self.currentTime = currentTime
         // On the first updtae call, set the time variables
@@ -71,6 +78,9 @@ class GameplayScene: SKScene {
             let timeRemaining = ScoreManager.goalTime - (currentTime - self.time!)
             if timeRemaining < 0.0 {
                     timeLabel.text = "Too Late!"
+                    self.overtime = true
+                    outOfTime()
+                return
             } else {
                 timeLabel.text = String(format: "%.2f", arguments: [timeRemaining])
             }
@@ -80,12 +90,46 @@ class GameplayScene: SKScene {
         }
         
         // When the pre-session screen should disappear
-        if (self.thinkTimeCounter! - currentTime) < 0.0 && !started {
+        if (self.thinkTimeCounter! - currentTime) < 0.0 && !started && !self.overtime{
             self.started = true
             self.time = currentTime
             setBlocker(true, zPos: 0)
             timeLabel.text = "GO"
         }
+        
+    }
+    
+    func outOfTime() -> () {
+        let buttonsArea = childNodeWithName("buttonsArea")
+        let timeLabel = childNodeWithName("timeLabel")
+        let zPos = timeLabel?.zPosition
+        
+        let buttonsDisapperAnimation = SKAction.sequence([
+            SKAction.fadeOutWithDuration(0.0),
+            SKAction.runBlock() { buttonsArea?.zPosition = CGFloat(self.foregroundZPosition) },
+            SKAction.fadeInWithDuration(0.3)
+        ])
+        
+        let labelToMiddleAndBackAnimation = SKAction.sequence([
+            SKAction.moveToY(384, duration: 0.2),
+            SKAction.scaleTo(1.25, duration: 0.2),
+            SKAction.waitForDuration(0.3),
+            SKAction.scaleTo(1.0, duration: 0.2),
+            SKAction.moveToY(708, duration: 0.3),
+            SKAction.runBlock() {
+                self.decreaseHeart()
+            },
+            SKAction.waitForDuration(0.25)
+        ])
+        
+        buttonsArea?.runAction(buttonsDisapperAnimation, completion: {
+            timeLabel?.zPosition = CGFloat(self.foregroundZPosition)
+            timeLabel?.runAction(labelToMiddleAndBackAnimation, completion: {
+                timeLabel?.zPosition = zPos!
+                self.overtime = false
+                self.startNewLevel()
+            })
+        })
         
     }
     
@@ -95,11 +139,16 @@ class GameplayScene: SKScene {
         self.thinkTimeCounter = nil
         self.started = false
         initDialog()
-        setBlocker(false, zPos: 4)
+        setBlocker(false, zPos: self.foregroundZPosition)
         initButtons()
     }
     
     func checkPress(color: String) -> () {
+        // Ignore presses if the player is out of time
+        if self.overtime {
+            return
+        }
+        
         let debugLabel = childNodeWithName("debugLabel") as! SKLabelNode
         
         // Change the score and the label accordinaly
