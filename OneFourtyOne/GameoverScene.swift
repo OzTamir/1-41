@@ -43,9 +43,10 @@ class GameoverScene: SKScene {
     
     func newGame() -> () {
         let transition = SKTransition.pushWithDirection(.Right, duration: AppDelegate.animationDuration)
-        let gamemodeScene = GamemodeScene(fileNamed: "GamemodeScene")
-        gamemodeScene.scaleMode = AppDelegate.sceneScaleMode
-        self.view?.presentScene(gamemodeScene, transition: transition)
+        let gameplayScene = GameplayScene(fileNamed: "GameplayScene")
+        gameplayScene.gameMode = .Countdown
+        gameplayScene.scaleMode = AppDelegate.sceneScaleMode
+        self.view?.presentScene(gameplayScene, transition: transition)
     }
     
     // Called when the back button is pressed

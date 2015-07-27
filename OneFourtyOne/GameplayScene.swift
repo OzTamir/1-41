@@ -77,10 +77,12 @@ class GameplayScene: SKScene {
         if started {
             let timeRemaining = ScoreManager.goalTime - (currentTime - self.time!)
             if timeRemaining < 0.0 {
-                    timeLabel.text = "Too Late!"
+                timeLabel.text = "Too Late!"
+                if self.gameMode == .Countdown {
                     self.overtime = true
                     outOfTime()
-                return
+                    return
+                }
             } else {
                 timeLabel.text = String(format: "%.2f", arguments: [timeRemaining])
             }
@@ -96,40 +98,6 @@ class GameplayScene: SKScene {
             setBlocker(true, zPos: 0)
             timeLabel.text = "GO"
         }
-        
-    }
-    
-    func outOfTime() -> () {
-        let buttonsArea = childNodeWithName("buttonsArea")
-        let timeLabel = childNodeWithName("timeLabel")
-        let zPos = timeLabel?.zPosition
-        
-        let buttonsDisapperAnimation = SKAction.sequence([
-            SKAction.fadeOutWithDuration(0.0),
-            SKAction.runBlock() { buttonsArea?.zPosition = CGFloat(self.foregroundZPosition) },
-            SKAction.fadeInWithDuration(0.3)
-        ])
-        
-        let labelToMiddleAndBackAnimation = SKAction.sequence([
-            SKAction.moveToY(384, duration: 0.2),
-            SKAction.scaleTo(1.25, duration: 0.2),
-            SKAction.waitForDuration(0.3),
-            SKAction.scaleTo(1.0, duration: 0.2),
-            SKAction.moveToY(708, duration: 0.3),
-            SKAction.runBlock() {
-                self.decreaseHeart()
-            },
-            SKAction.waitForDuration(0.25)
-        ])
-        
-        buttonsArea?.runAction(buttonsDisapperAnimation, completion: {
-            timeLabel?.zPosition = CGFloat(self.foregroundZPosition)
-            timeLabel?.runAction(labelToMiddleAndBackAnimation, completion: {
-                timeLabel?.zPosition = zPos!
-                self.overtime = false
-                self.startNewLevel()
-            })
-        })
         
     }
     
