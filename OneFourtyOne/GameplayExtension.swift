@@ -21,6 +21,40 @@ import SpriteKit
 
 extension GameplayScene {
     
+    // Show a neat animation when the player runs out of time
+    func outOfTime() -> () {
+        let buttonsArea = childNodeWithName("buttonsArea")
+        let timeLabel = childNodeWithName("timeLabel")
+        let zPos = timeLabel?.zPosition
+        
+        let buttonsDisapperAnimation = SKAction.sequence([
+            SKAction.fadeOutWithDuration(0.0),
+            SKAction.runBlock() { buttonsArea?.zPosition = CGFloat(self.foregroundZPosition) },
+            SKAction.fadeInWithDuration(0.3)
+            ])
+        
+        let labelToMiddleAndBackAnimation = SKAction.sequence([
+            SKAction.moveToY(384, duration: 0.2),
+            SKAction.scaleTo(1.15, duration: 0.2),
+            SKAction.waitForDuration(0.3),
+            SKAction.scaleTo(1.0, duration: 0.2),
+            SKAction.moveToY(708, duration: 0.3),
+            SKAction.runBlock() {
+                self.decreaseHeart()
+            },
+            SKAction.waitForDuration(0.25)
+            ])
+        
+        buttonsArea?.runAction(buttonsDisapperAnimation, completion: {
+            timeLabel?.zPosition = CGFloat(self.foregroundZPosition) + 1
+            timeLabel?.runAction(labelToMiddleAndBackAnimation, completion: {
+                timeLabel?.zPosition = zPos!
+                self.overtime = false
+                self.startNewLevel()
+            })
+        })
+    }
+    
     // Decrease the lives GUI and change the score when resuming a game
     func resumeGame() -> () {
         let livesToDecrease = self.maxLives - self.lives
@@ -36,9 +70,9 @@ extension GameplayScene {
     func gameover() -> () {
         let transition = SKTransition.pushWithDirection(.Left, duration: 0.25)
         let gameoverScene = GameoverScene(fileNamed: "GameoverScene")!
-        gameoverScene.scaleMode = SKSceneScaleMode.Fill
         gameoverScene.score = self.score
         gameoverScene.mode = self.gameMode
+        gameoverScene.scaleMode = AppDelegate.sceneScaleMode
         self.view?.presentScene(gameoverScene, transition: transition)
     }
     
@@ -72,7 +106,8 @@ extension GameplayScene {
         let arrayKey = Int(arc4random_uniform(UInt32(self.colors.count)))
         self.targetColor = colors[arrayKey]
         
-        setLabelText("instructionLabel", text: "Press the button that says \(self.targetColor!)")
+        setLabelText("instructionLabel", text: "Press the button that says")
+        setLabelText("colorLabel", text: self.targetColor!)
     }
     
     // Get a random color
@@ -117,8 +152,6 @@ extension GameplayScene {
     // Initialize the buttons, the labels and the colors
     func initButtons() -> () {
         self.nodeColors = []
-        
-        setLabelText("colorLabel", text: self.targetColor!)
         var items = getColors()
         
         // Init the up-right button/label
@@ -148,23 +181,19 @@ extension GameplayScene {
     
     // Show/Hide the "Press the button..." dialog
     func setBlocker(hidden: Bool, zPos: Int) -> () {
-        let buttonsBlocker = childNodeWithName("buttonsBlocker")
-        let instructionLabel = childNodeWithName("instructionLabel") as! SKLabelNode
+        let buttonsArea = childNodeWithName("buttonsArea")
         
         // Hide the blockers and send 'em to the back
-        buttonsBlocker?.hidden = hidden
-        buttonsBlocker?.zPosition = CGFloat(zPos - 1)
-        instructionLabel.hidden = hidden
-        instructionLabel.zPosition = CGFloat(zPos)
+        buttonsArea?.zPosition = CGFloat(zPos - 1)
     }
     
     func pauseGame() -> () {
         let transition = SKTransition.pushWithDirection(.Up, duration: AppDelegate.animationDuration)
         let pauseScene = PauseScene(fileNamed: "PauseScene")!
-        pauseScene.scaleMode = SKSceneScaleMode.Fill
         pauseScene.currentGameMode = self.gameMode
         pauseScene.currentLives = self.lives
         pauseScene.currentScore = self.score
+        pauseScene.scaleMode = AppDelegate.sceneScaleMode
         self.view?.presentScene(pauseScene, transition: transition)
     }
     

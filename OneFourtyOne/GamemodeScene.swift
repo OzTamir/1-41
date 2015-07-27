@@ -17,40 +17,40 @@ enum GameModes : String {
 
 class GamemodeScene: SKScene {
     override func didMoveToView(view: SKView) {
-        let arcadeHSLabel = childNodeWithName("arcadeHighScoreLabel") as! SKLabelNode
+        let arcadeHSLabel = childNodeWithName("arcadeModeButton")?.childNodeWithName("arcadeHSLabel")?.childNodeWithName("arcadeHSCounter") as! SKLabelNode
         arcadeHSLabel.text = ScoreManager.formatScore(ScoreManager.getHighscoreForGameMode(.Arcade))
         
-        let speedHSLabel = childNodeWithName("speedHighScoreLabel") as! SKLabelNode
+        let speedHSLabel = childNodeWithName("speedModeButton")?.childNodeWithName("speedHSLabel")?.childNodeWithName("speedHSCounter") as! SKLabelNode
         speedHSLabel.text = ScoreManager.formatScore(ScoreManager.getHighscoreForGameMode(.Speed))
         if speedHSLabel.text == ScoreManager.formatScore(1.42) {
             speedHSLabel.text = ScoreManager.formatScore(0.0)
         }
         
-        let countdownHSLabel = childNodeWithName("countdownHighScoreLabel") as! SKLabelNode
+        let countdownHSLabel = childNodeWithName("countdownModeButton")?.childNodeWithName("countdownHSLabel")?.childNodeWithName("countdownHSCounter") as! SKLabelNode
         countdownHSLabel.text = ScoreManager.formatScore(ScoreManager.getHighscoreForGameMode(.Countdown))
     }
     
     func startGame(mode: GameModes) -> () {
         let transition = SKTransition.pushWithDirection(.Down, duration: AppDelegate.animationDuration)
         let gameplayScene = GameplayScene(fileNamed: "GameplayScene")!
-        gameplayScene.scaleMode = SKSceneScaleMode.Fill
         gameplayScene.gameMode = mode
+        gameplayScene.scaleMode = AppDelegate.sceneScaleMode
         self.view?.presentScene(gameplayScene, transition: transition)
     }
     
     // Called when the back button is pressed
     func backToMenu() -> () {
         let transition = SKTransition.pushWithDirection(.Right, duration: AppDelegate.animationDuration)
-        let gameplayScene = MenuScene(fileNamed: "MenuScene")!
-        gameplayScene.scaleMode = SKSceneScaleMode.Fill
-        self.view?.presentScene(gameplayScene, transition: transition)
+        let menuScene = MenuScene(fileNamed: "MenuScene")!
+        menuScene.scaleMode = AppDelegate.sceneScaleMode
+        self.view?.presentScene(menuScene, transition: transition)
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         /* Called when a touch begins */
         
-        let touch = touches.first!
-        let location = touch.locationInNode(self)
+        let touch = touches.first
+        let location = touch!.locationInNode(self)
         let node = self.nodeAtPoint(location)
         
         if let name = node.name {

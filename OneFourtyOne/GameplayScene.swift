@@ -32,8 +32,10 @@ class GameplayScene: SKScene {
     // Whether the actual game has started
     var started = false
     // Time before the buttons are revealed
-    let thinkTime = 4.0
+    let thinkTime = 1.0
     var thinkTimeCounter : NSTimeInterval?
+    // Whether we are overtime and should ignore touches
+    var overtime = false
     
     /* -- Game settings properties -- */
     let goalTime = 1.41
@@ -42,6 +44,7 @@ class GameplayScene: SKScene {
     var lives = 3
     var returnedFromPause = false
     var gameMode : GameModes?
+    let foregroundZPosition = 4
     
     override func didMoveToView(view: SKView) {
         if self.returnedFromPause {
@@ -57,6 +60,10 @@ class GameplayScene: SKScene {
     }
     
     override func update(currentTime: NSTimeInterval) {
+        if overtime {
+            return
+        }
+        
         // Set the object's currentTime property
         self.currentTime = currentTime
         // On the first updtae call, set the time variables
@@ -70,17 +77,22 @@ class GameplayScene: SKScene {
         if started {
             let timeRemaining = ScoreManager.goalTime - (currentTime - self.time!)
             if timeRemaining < 0.0 {
-                    timeLabel.text = "Too Late!"
+                timeLabel.text = "Too Late!"
+                if self.gameMode == .Countdown {
+                    self.overtime = true
+                    outOfTime()
+                    return
+                }
             } else {
                 timeLabel.text = String(format: "%.2f", arguments: [timeRemaining])
             }
         } else {
             // else show the time until the session will start
-            timeLabel.text = String(format: "%.0f", arguments: [self.thinkTimeCounter! - currentTime])
+            timeLabel.text = String(format: "%.1f", arguments: [self.thinkTimeCounter! - currentTime])
         }
         
         // When the pre-session screen should disappear
-        if (self.thinkTimeCounter! - currentTime) < 0.0 && !started {
+        if (self.thinkTimeCounter! - currentTime) < 0.0 && !started && !self.overtime{
             self.started = true
             self.time = currentTime
             setBlocker(true, zPos: 0)
@@ -95,11 +107,16 @@ class GameplayScene: SKScene {
         self.thinkTimeCounter = nil
         self.started = false
         initDialog()
-        setBlocker(false, zPos: 4)
+        setBlocker(false, zPos: self.foregroundZPosition)
         initButtons()
     }
     
     func checkPress(color: String) -> () {
+        // Ignore presses if the player is out of time
+        if self.overtime {
+            return
+        }
+        
         let debugLabel = childNodeWithName("debugLabel") as! SKLabelNode
         
         // Change the score and the label accordinaly
@@ -123,8 +140,8 @@ class GameplayScene: SKScene {
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         // Get the node that was pressed
-        let touch = touches.first!
-        let location = touch.locationInNode(self)
+        let touch = touches.first
+        let location = touch!.locationInNode(self)
         let node = self.nodeAtPoint(location)
         
         let debugLabel = childNodeWithName("debugLabel") as! SKLabelNode

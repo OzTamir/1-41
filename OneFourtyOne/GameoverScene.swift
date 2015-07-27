@@ -43,28 +43,27 @@ class GameoverScene: SKScene {
     
     func newGame() -> () {
         let transition = SKTransition.pushWithDirection(.Right, duration: AppDelegate.animationDuration)
-        let gamemodeScene = GamemodeScene(fileNamed: "GamemodeScene")!
-        gamemodeScene.scaleMode = SKSceneScaleMode.Fill
-        self.view?.presentScene(gamemodeScene, transition: transition)
+        let gameplayScene = GameplayScene(fileNamed: "GameplayScene")!
+        gameplayScene.gameMode = .Countdown
+        gameplayScene.scaleMode = AppDelegate.sceneScaleMode
+        self.view?.presentScene(gameplayScene, transition: transition)
     }
     
     // Called when the back button is pressed
     func backToMenu() -> () {
         let transition = SKTransition.pushWithDirection(.Down, duration: AppDelegate.animationDuration)
-        let menuScreen = MenuScene(fileNamed: "MenuScene")!
-        menuScreen.scaleMode = SKSceneScaleMode.Fill
-        self.view?.presentScene(menuScreen, transition: transition)
+        let menuScene = MenuScene(fileNamed: "MenuScene")!
+        menuScene.scaleMode = AppDelegate.sceneScaleMode
+        self.view?.presentScene(menuScene, transition: transition)
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         // Get the node that was pressed
-        let touch = touches.first!
-        let location = touch.locationInNode(self)
+        let touch = touches.first
+        let location = touch!.locationInNode(self)
         let node = self.nodeAtPoint(location)
-        
-        let debugLabel = childNodeWithName("debugLabel") as! SKLabelNode
+
         if let name = node.name {
-            debugLabel.text = name
             switch name {
                 case "newGameButton", "newGameLabel":
                     newGame()

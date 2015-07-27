@@ -41,6 +41,8 @@ class ScoreManager {
                     return self.calculateSpeedScore(currentScore, currentTime: currentTime, startTime: startTime)
                 case .Countdown:
                     return self.calculateCountdownScore(currentScore, currentTime: currentTime, startTime: startTime)
+                default:
+                    break
             }
         }
         return currentScore

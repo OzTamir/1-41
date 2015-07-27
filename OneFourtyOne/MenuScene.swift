@@ -17,27 +17,30 @@ class MenuScene: SKScene {
 //        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame));
 //        
 //        self.addChild(myLabel)
+        let highscoreLabel = childNodeWithName("highscoreLabel") as! SKLabelNode
+        highscoreLabel.text = ScoreManager.formatScore(ScoreManager.getHighscoreForGameMode(.Countdown))
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         /* Called when a touch begins */
         
-        let touch = touches.first!
-        let location = touch.locationInNode(self)
+        let touch = touches.first
+        let location = touch!.locationInNode(self)
         let node = self.nodeAtPoint(location)
         
         if let name = node.name {
             switch name {
                 case "startButton", "startLabel":
                     let transition = SKTransition.pushWithDirection(.Left, duration: AppDelegate.animationDuration)
-                    let gamemodeScene = GamemodeScene(fileNamed: "GamemodeScene")!
-                    gamemodeScene.scaleMode = SKSceneScaleMode.Fill
-                    self.view?.presentScene(gamemodeScene, transition: transition)
+                    let gameplayScene = GameplayScene(fileNamed: "GameplayScene")!
+                    gameplayScene.gameMode = .Countdown
+                    gameplayScene.scaleMode = AppDelegate.sceneScaleMode
+                    self.view?.presentScene(gameplayScene, transition: transition)
                 case "optionsButton", "optionsLabel":
                     let transition = SKTransition.pushWithDirection(.Up, duration: AppDelegate.animationDuration)
-                    let gameplayScene = OptionsScene(fileNamed: "OptionsScene")!
-                    gameplayScene.scaleMode = SKSceneScaleMode.Fill
-                    self.view?.presentScene(gameplayScene, transition: transition)
+                    let optionsScene = OptionsScene(fileNamed: "OptionsScene")!
+                    optionsScene.scaleMode = AppDelegate.sceneScaleMode
+                    self.view?.presentScene(optionsScene, transition: transition)
                 case "titleLabel":
                     animateTitleOnTouch()
                 default:

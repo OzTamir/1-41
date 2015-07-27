@@ -26,7 +26,7 @@ extension SKNode {
 }
 
 class GameViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "pauseGame", name: "PauseGameScene", object: nil)
@@ -40,12 +40,12 @@ class GameViewController: UIViewController {
             skView.ignoresSiblingOrder = true
             
             /* Set the scale mode to scale to fit the window */
-            scene.scaleMode = .AspectFill
+            scene.scaleMode = AppDelegate.sceneScaleMode
             
             skView.presentScene(scene)
         }
     }
-    
+
     @objc func pauseGame() -> () {
         let skView = self.view as! SKView
         if let gameplayScene = skView.scene as? GameplayScene {
@@ -54,17 +54,22 @@ class GameViewController: UIViewController {
             pauseScene.currentGameMode = gameplayScene.gameMode
             pauseScene.currentLives = gameplayScene.lives
             pauseScene.currentScore = gameplayScene.score
-            pauseScene.scaleMode = .Fill
+            pauseScene.scaleMode = AppDelegate.sceneScaleMode
             gameplayScene.view?.presentScene(pauseScene, transition: transition)
         }
     }
-
+    
     override func shouldAutorotate() -> Bool {
         return true
     }
 
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.LandscapeLeft
+        // TODO: NOTE WE HAVE A FALSE AND HERE
+        if false && UIDevice.currentDevice().userInterfaceIdiom == .Phone {
+            return UIInterfaceOrientationMask.AllButUpsideDown
+        } else {
+            return UIInterfaceOrientationMask.All
+        }
     }
 
     override func didReceiveMemoryWarning() {
