@@ -36,6 +36,7 @@ class GameplayScene: SKScene {
     var thinkTimeCounter : NSTimeInterval?
     // Whether we are overtime and should ignore touches
     var overtime = false
+    var countdown = false
     
     /* -- Game settings properties -- */
     let goalTime = 1.41
@@ -52,15 +53,18 @@ class GameplayScene: SKScene {
         }
         
         /* Setup your scene here */
+        if !countdown {
+            self.countdown = true
+            preGameCountdown()
+        }
+        
         setLabelText("colorLabel", text: "")
         
-        setBlocker(false, zPos: 4)
-        initDialog()
-        initButtons()
+        setBlocker(false, zPos: self.foregroundZPosition)
     }
     
     override func update(currentTime: NSTimeInterval) {
-        if overtime {
+        if overtime || countdown {
             return
         }
         
@@ -88,7 +92,7 @@ class GameplayScene: SKScene {
             }
         } else {
             // else show the time until the session will start
-            timeLabel.text = String(format: "%.1f", arguments: [self.thinkTimeCounter! - currentTime])
+            timeLabel.text = String(format: "%.2f", arguments: [self.thinkTimeCounter! - currentTime])
         }
         
         // When the pre-session screen should disappear
@@ -113,7 +117,7 @@ class GameplayScene: SKScene {
     
     func checkPress(color: String) -> () {
         // Ignore presses if the player is out of time
-        if self.overtime {
+        if self.overtime || self.countdown {
             return
         }
         
