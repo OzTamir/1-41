@@ -62,10 +62,8 @@ class GameoverScene: SKScene {
         let touch = touches.first as! UITouch
         let location = touch.locationInNode(self)
         let node = self.nodeAtPoint(location)
-        
-        let debugLabel = childNodeWithName("debugLabel") as! SKLabelNode
+
         if let name = node.name {
-            debugLabel.text = name
             switch name {
                 case "newGameButton", "newGameLabel":
                     newGame()

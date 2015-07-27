@@ -13,7 +13,12 @@ class PauseScene: SKScene {
     var currentLives : Int?
     var currentScore : Double?
     var currentGameMode : GameModes?
- 
+    
+    override func didMoveToView(view: SKView) {
+        let currentScoreLabel = childNodeWithName("currentScore") as! SKLabelNode
+        currentScoreLabel.text = ScoreManager.formatScore(currentScore!)
+    }
+    
     func resumeGame() -> () {
         let transition = SKTransition.pushWithDirection(.Down, duration: AppDelegate.animationDuration)
         let gameplayScene = GameplayScene(fileNamed: "GameplayScene")

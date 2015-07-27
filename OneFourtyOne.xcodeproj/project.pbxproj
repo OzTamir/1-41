@@ -107,15 +107,15 @@
 		F576910A1B62602C004E37C1 /* OneFourtyOne */ = {
 			isa = PBXGroup;
 			children = (
+				F59049111B63A81000352C74 /* GamemodeScene.sks */,
+				F59049131B63A81B00352C74 /* GamemodeScene.swift */,
 				F576910D1B62602C004E37C1 /* AppDelegate.swift */,
 				F576910F1B62602C004E37C1 /* MenuScene.sks */,
 				F59049091B6381BA00352C74 /* OptionsScene.sks */,
 				F57691331B6261A3004E37C1 /* GameplayScene.sks */,
 				F590490D1B638CD300352C74 /* GameoverScene.sks */,
-				F59049111B63A81000352C74 /* GamemodeScene.sks */,
 				F5D3C7821B63D59E00EEF644 /* PauseScene.sks */,
 				F5D3C7841B63D5AB00EEF644 /* PauseScene.swift */,
-				F59049131B63A81B00352C74 /* GamemodeScene.swift */,
 				F5CD56A71B63B093009D63AA /* ScoreManager.swift */,
 				F57691111B62602C004E37C1 /* MenuScene.swift */,
 				F5406D691B66893B00B5E147 /* SKUtils.swift */,

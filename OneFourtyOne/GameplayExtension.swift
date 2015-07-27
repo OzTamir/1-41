@@ -35,7 +35,7 @@ extension GameplayScene {
         
         let labelToMiddleAndBackAnimation = SKAction.sequence([
             SKAction.moveToY(384, duration: 0.2),
-            SKAction.scaleTo(1.25, duration: 0.2),
+            SKAction.scaleTo(1.15, duration: 0.2),
             SKAction.waitForDuration(0.3),
             SKAction.scaleTo(1.0, duration: 0.2),
             SKAction.moveToY(708, duration: 0.3),
