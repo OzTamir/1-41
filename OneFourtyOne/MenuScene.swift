@@ -17,6 +17,8 @@ class MenuScene: SKScene {
 //        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame));
 //        
 //        self.addChild(myLabel)
+        let highscoreLabel = childNodeWithName("highscoreLabel") as! SKLabelNode
+        highscoreLabel.text = ScoreManager.formatScore(ScoreManager.getHighscoreForGameMode(.Countdown))
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
