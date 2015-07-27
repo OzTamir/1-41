@@ -21,6 +21,49 @@ import SpriteKit
 
 extension GameplayScene {
     
+    // Show a countdown before the actual game starts
+    func preGameCountdown() -> () {
+        let timeLabel = childNodeWithName("timeLabel") as! SKLabelNode
+        let zPos = timeLabel.zPosition
+        timeLabel.zPosition = CGFloat(self.foregroundZPosition) + 1
+        
+        let colorLabel = childNodeWithName("colorLabel") as! SKLabelNode
+        let originalColor = colorLabel.text
+        colorLabel.text = "???"
+        
+        let countdownSequence = SKAction.sequence([
+            SKAction.runBlock() {
+                timeLabel.text = ""
+            },
+            SKAction.moveToY(384, duration: 0.0),
+            SKAction.runBlock() {
+                timeLabel.text = "3"
+            },
+            SKAction.waitForDuration(1.0),
+            SKAction.runBlock() {
+                timeLabel.text = "2"
+            },
+            SKAction.waitForDuration(1.0),
+            SKAction.runBlock() {
+                timeLabel.text = "1"
+            },
+            SKAction.waitForDuration(1.0),
+            SKAction.runBlock() {
+                timeLabel.text = "GO!"
+            },
+            SKAction.waitForDuration(0.5),
+            SKAction.moveToY(708, duration: 0.3)
+        ])
+        
+        timeLabel.runAction(countdownSequence, completion: {
+            timeLabel.zPosition = zPos
+            colorLabel.text = originalColor
+            self.countdown = false
+            self.initDialog()
+            self.initButtons()
+        })
+    }
+    
     // Show a neat animation when the player runs out of time
     func outOfTime() -> () {
         let buttonsArea = childNodeWithName("buttonsArea")
@@ -46,7 +89,7 @@ extension GameplayScene {
             ])
         
         buttonsArea?.runAction(buttonsDisapperAnimation, completion: {
-            timeLabel?.zPosition = CGFloat(self.foregroundZPosition)
+            timeLabel?.zPosition = CGFloat(self.foregroundZPosition) + 1
             timeLabel?.runAction(labelToMiddleAndBackAnimation, completion: {
                 timeLabel?.zPosition = zPos!
                 self.overtime = false
@@ -57,7 +100,7 @@ extension GameplayScene {
     
     // Decrease the lives GUI and change the score when resuming a game
     func resumeGame() -> () {
-        var livesToDecrease = self.maxLives - self.lives
+        let livesToDecrease = self.maxLives - self.lives
         self.lives = self.maxLives
         for _ in 0..<livesToDecrease {
             decreaseHeart(animate: false)
