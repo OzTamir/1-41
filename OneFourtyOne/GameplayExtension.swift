@@ -150,75 +150,73 @@ extension GameplayScene {
         self.targetColor = colors[arrayKey]
         
         setLabelText("instructionLabel", text: "Press the button that says")
-        setLabelText("colorLabel", text: self.targetColor!)
-    }
-    
-    // Get a random color
-    func getRandomColor() -> UIColor{
-        var randomRed:CGFloat = CGFloat(drand48())
-        var randomGreen:CGFloat = CGFloat(drand48())
-        var randomBlue:CGFloat = CGFloat(drand48())
-        return UIColor(red: randomRed, green: randomGreen, blue: randomBlue, alpha: 1.0)
+        setLabelText("colorLabel", text: self.targetColor!, withColor: ColorManager.colorForName[self.targetColor!])
     }
     
     // Set the text of an SKLabel
-    func setLabelText(labelName: String, text: String) -> () {
+    func setLabelText(labelName: String, text: String, withColor: UIColor? = nil) -> () {
         let label = childNodeWithName(labelName) as! SKLabelNode
         label.text = text
+        if let fontColor = withColor {
+            label.fontColor = fontColor
+            if let outlineArray = self.labelOutlines[labelName] {
+                for (idx, label) in enumerate(outlineArray) {
+                    setLabelText("\(labelName)\(idx)", text: text)
+                }
+            } else {
+                // Add outline labels around the label and add 'em to the dictionary to avoid readding them later
+                self.labelOutlines[labelName] = [SKLabelNode]()
+                addOutline(label, offsetX: 1.5, offsetY: 1.5, labelName: labelName, idx: 0)
+                addOutline(label, offsetX: -1.5, offsetY: -1.5, labelName: labelName, idx: 1)
+                addOutline(label, offsetX: 1.5, offsetY: -1.5, labelName: labelName, idx: 2)
+                addOutline(label, offsetX: -1.5, offsetY: 1.5, labelName: labelName, idx: 3)
+            }
+        }
     }
     
-    // Get an array with names of colors
-    func getColors() -> ([String]) {
-        var localColors = ["Green", "Red", "Blue", "Yellow", "White", "Black", "Purple", "Pink", "Brown", "Orange"]
-        var items = [String]()
-        var targetInArray = false
-        for _ in 0..<4 {
-            
-            // random key from array
-            let arrayKey = Int(arc4random_uniform(UInt32(localColors.count)))
-            
-            if self.targetColor! == localColors[arrayKey] {
-                targetInArray = true
-            }
-            // your random number
-            items.append(localColors[arrayKey])
-            
-            // make sure the number isnt repeated
-            localColors.removeAtIndex(arrayKey)
-        }
-        if !targetInArray {
-            items[Int(arc4random_uniform(UInt32(items.count)))] = self.targetColor!
-        }
-        return items
+    func addOutline(label : SKLabelNode, offsetX : Double, offsetY : Double, labelName : String, idx : Int) -> () {
+        let newLabel = SKLabelNode(text: label.text)
+        newLabel.name = "\(labelName)\(idx)"
+        newLabel.fontSize = label.fontSize
+        newLabel.fontName = label.fontName
+        newLabel.horizontalAlignmentMode = .Center
+        newLabel.verticalAlignmentMode = .Center
+        newLabel.position =
+            CGPoint(x: CGRectGetMidX(label.frame) + CGFloat(offsetX), y: CGRectGetMidY(label.frame) + CGFloat(offsetY))
+        newLabel.zPosition = label.zPosition - 1
+        self.addChild(newLabel)
+        
+        // Add it to the outlines dictionary
+        self.labelOutlines[labelName]?.append(newLabel)
     }
     
     // Initialize the buttons, the labels and the colors
     func initButtons() -> () {
         self.nodeColors = []
-        var items = getColors()
+        var items = ColorManager.getColorNames(4, withColorName: self.targetColor!)
         
         // Init the up-right button/label
         let upRightButton = childNodeWithName("upRightButton")
-        upRightButton?.runAction(SKAction.colorizeWithColor(getRandomColor(), colorBlendFactor: 1.0, duration: 0.0))
-        setLabelText("upRightLabel", text: items[0])
+        upRightButton?.runAction(SKAction.colorizeWithColor(ColorManager.getRandomColor(), colorBlendFactor: 1.0, duration: 0.0))
+        setLabelText("upRightLabel", text: items[0], withColor: ColorManager.getRandomColor(offset: 0.2))
         self.nodeColors.append(items[0])
         
         // Init the up-left button/label
         let upLeftButton = childNodeWithName("upLeftButton")
-        upLeftButton?.runAction(SKAction.colorizeWithColor(getRandomColor(), colorBlendFactor: 1.0, duration: 0.0))
-        setLabelText("upLeftLabel", text: items[1])
+        upLeftButton?.runAction(SKAction.colorizeWithColor(ColorManager.getRandomColor(), colorBlendFactor: 1.0, duration: 0.0))
+        setLabelText("upLeftLabel", text: items[1], withColor: ColorManager.getRandomColor(offset: 0.2))
         self.nodeColors.append(items[1])
         
         // Init the down-right button/label
         let downRightButton = childNodeWithName("downRightButton")
-        downRightButton?.runAction(SKAction.colorizeWithColor(getRandomColor(), colorBlendFactor: 1.0, duration: 0.0))
-        setLabelText("downRightLabel", text: items[2])
+        downRightButton?.runAction(SKAction.colorizeWithColor(ColorManager.getRandomColor(), colorBlendFactor: 1.0, duration: 0.0))
+        setLabelText("downRightLabel", text: items[2], withColor: ColorManager.getRandomColor(offset: 0.2))
         self.nodeColors.append(items[2])
         
         // Init the down-left button/label
         let downLeftButton = childNodeWithName("downLeftButton")
-        downLeftButton?.runAction(SKAction.colorizeWithColor(getRandomColor(), colorBlendFactor: 1.0, duration: 0.0))
-        setLabelText("downLeftLabel", text: items[3])
+        downLeftButton?.runAction(SKAction.colorizeWithColor(ColorManager.getRandomColor(), colorBlendFactor: 1.0, duration: 0.0))
+        setLabelText("downLeftLabel", text: items[3], withColor: ColorManager.getRandomColor(offset: 0.2))
         self.nodeColors.append(items[3])
     }
     

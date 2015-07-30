@@ -13,6 +13,7 @@ import SpriteKit
 class GameplayScene: SKScene {
     /* -- Color managment properties -- */
     let colors = ["Green", "Red", "Blue", "Yellow", "White", "Black", "Purple", "Pink", "Brown", "Orange"]
+    var labelOutlines = [String: [SKLabelNode]]()
     var nodeColors = [String]()
     var targetColor : String?
     
@@ -79,7 +80,7 @@ class GameplayScene: SKScene {
         let timeLabel = childNodeWithName("timeLabel") as! SKLabelNode
         // If the session has started, show the time from start
         if started {
-            let timeRemaining = ScoreManager.goalTime - (currentTime - self.time!)
+            let timeRemaining = self.goalTime - (currentTime - self.time!)
             if timeRemaining < 0.0 {
                 timeLabel.text = "Too Late!"
                 if self.gameMode == .Countdown {

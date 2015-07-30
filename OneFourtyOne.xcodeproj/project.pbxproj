@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F50FCF651B6A536F00F1DA7B /* ColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F50FCF641B6A536F00F1DA7B /* ColorManager.swift */; };
 		F5406D6A1B66893B00B5E147 /* SKUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5406D691B66893B00B5E147 /* SKUtils.swift */; };
 		F576910E1B62602C004E37C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F576910D1B62602C004E37C1 /* AppDelegate.swift */; };
 		F57691101B62602C004E37C1 /* MenuScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = F576910F1B62602C004E37C1 /* MenuScene.sks */; };
@@ -41,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F50FCF641B6A536F00F1DA7B /* ColorManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorManager.swift; sourceTree = "<group>"; };
 		F5406D691B66893B00B5E147 /* SKUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKUtils.swift; sourceTree = "<group>"; };
 		F57691081B62602C004E37C1 /* OneFourtyOne.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneFourtyOne.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F576910C1B62602C004E37C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -115,10 +117,11 @@
 				F57691331B6261A3004E37C1 /* GameplayScene.sks */,
 				F590490D1B638CD300352C74 /* GameoverScene.sks */,
 				F5D3C7821B63D59E00EEF644 /* PauseScene.sks */,
-				F5D3C7841B63D5AB00EEF644 /* PauseScene.swift */,
 				F5CD56A71B63B093009D63AA /* ScoreManager.swift */,
-				F57691111B62602C004E37C1 /* MenuScene.swift */,
+				F50FCF641B6A536F00F1DA7B /* ColorManager.swift */,
 				F5406D691B66893B00B5E147 /* SKUtils.swift */,
+				F5D3C7841B63D5AB00EEF644 /* PauseScene.swift */,
+				F57691111B62602C004E37C1 /* MenuScene.swift */,
 				F590490B1B6381C900352C74 /* OptionsScene.swift */,
 				F590490F1B638CDD00352C74 /* GameoverScene.swift */,
 				F57691311B62618B004E37C1 /* GameplayScene.swift */,
@@ -267,6 +270,7 @@
 				F5406D6A1B66893B00B5E147 /* SKUtils.swift in Sources */,
 				F57691321B62618B004E37C1 /* GameplayScene.swift in Sources */,
 				F57691121B62602C004E37C1 /* MenuScene.swift in Sources */,
+				F50FCF651B6A536F00F1DA7B /* ColorManager.swift in Sources */,
 				F59049101B638CDD00352C74 /* GameoverScene.swift in Sources */,
 				F5CD56A81B63B093009D63AA /* ScoreManager.swift in Sources */,
 				F59049141B63A81B00352C74 /* GamemodeScene.swift in Sources */,
