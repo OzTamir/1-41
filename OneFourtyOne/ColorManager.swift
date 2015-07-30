@@ -63,10 +63,10 @@ class ColorManager {
     }
     
     // Get a random color
-    class func getRandomColor(offset : Double = 0.0) -> UIColor{
-        var randomRed:CGFloat = CGFloat(min(1.0, drand48() + offset))
-        var randomGreen:CGFloat = CGFloat(min(1.0, drand48() + offset))
-        var randomBlue:CGFloat = CGFloat(min(1.0, drand48() + offset))
+    class func getRandomColor(offset : Double = 1.0) -> UIColor{
+        var randomRed:CGFloat = CGFloat(max(0.0, min(1.0, drand48() * offset)))
+        var randomGreen:CGFloat = CGFloat(max(0.0, min(1.0, drand48() * offset)))
+        var randomBlue:CGFloat = CGFloat(max(0.0, min(1.0, drand48() * offset)))
         return UIColor(red: randomRed, green: randomGreen, blue: randomBlue, alpha: 1.0)
     }
     
