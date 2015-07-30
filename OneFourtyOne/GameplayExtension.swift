@@ -65,7 +65,7 @@ extension GameplayScene {
     }
     
     // Show a neat animation when the player runs out of time
-    func outOfTime() -> () {
+    func decreaseHeartLabelAnimation() -> () {
         let buttonsArea = childNodeWithName("buttonsArea")
         let timeLabel = childNodeWithName("timeLabel")
         let zPos = timeLabel?.zPosition
@@ -92,7 +92,7 @@ extension GameplayScene {
             timeLabel?.zPosition = CGFloat(self.foregroundZPosition) + 1
             timeLabel?.runAction(labelToMiddleAndBackAnimation, completion: {
                 timeLabel?.zPosition = zPos!
-                self.overtime = false
+                self.decreaseHeartLabelAnimationInProgress = false
                 self.startNewLevel()
             })
         })

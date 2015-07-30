@@ -35,8 +35,8 @@ class GameplayScene: SKScene {
     // Time before the buttons are revealed
     let thinkTime = 1.41
     var thinkTimeCounter : NSTimeInterval?
-    // Whether we are overtime and should ignore touches
-    var overtime = false
+    // Whether we are animating the label and should ignore touches
+    var decreaseHeartLabelAnimationInProgress = false
     var countdown = false
     
     /* -- Game settings properties -- */
@@ -65,7 +65,7 @@ class GameplayScene: SKScene {
     }
     
     override func update(currentTime: NSTimeInterval) {
-        if overtime || countdown {
+        if decreaseHeartLabelAnimationInProgress || countdown {
             return
         }
         
@@ -84,8 +84,8 @@ class GameplayScene: SKScene {
             if timeRemaining < 0.0 {
                 timeLabel.text = "Too Late!"
                 if self.gameMode == .Countdown {
-                    self.overtime = true
-                    outOfTime()
+                    self.decreaseHeartLabelAnimationInProgress = true
+                    decreaseHeartLabelAnimation()
                     return
                 }
             } else {
@@ -97,7 +97,7 @@ class GameplayScene: SKScene {
         }
         
         // When the pre-session screen should disappear
-        if (self.thinkTimeCounter! - currentTime) < 0.0 && !started && !self.overtime{
+        if (self.thinkTimeCounter! - currentTime) < 0.0 && !started && !self.decreaseHeartLabelAnimationInProgress{
             self.started = true
             self.time = currentTime
             setBlocker(true, zPos: 0)
@@ -118,7 +118,7 @@ class GameplayScene: SKScene {
     
     func checkPress(color: String) -> () {
         // Ignore presses if the player is out of time
-        if self.overtime || self.countdown {
+        if self.decreaseHeartLabelAnimationInProgress || self.countdown {
             return
         }
         
@@ -135,12 +135,14 @@ class GameplayScene: SKScene {
             setLabelText("timeLabel", text: "Correct!")
             updateScore()
         } else {
-            decreaseHeart()
-            setLabelText("timeLabel", text: "False!")
+            setLabelText("timeLabel", text: "Wrong!")
+            self.decreaseHeartLabelAnimationInProgress = true
+            decreaseHeartLabelAnimation()
             debugLabel.text = "FALSE!"
         }
-        
-        startNewLevel()
+        if !self.decreaseHeartLabelAnimationInProgress {
+            startNewLevel()
+        }
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
