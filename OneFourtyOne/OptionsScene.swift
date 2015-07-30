@@ -16,14 +16,19 @@ class OptionsScene: SKScene {
     
     func resetHighscores() -> () {
         // TODO: Display an "Are you sure?" Screen
-        let resetLabel = childNodeWithName("resetScoresLabel") as! SKLabelNode
+        let resetLabel = childNodeWithName("resetLabel") as! SKLabelNode
+        let scoreLabel = childNodeWithName("scoreLabel") as! SKLabelNode
         ScoreManager.resetHighscores()
         let animationSequence = SKAction.sequence([
             SKAction.runBlock() {
-                resetLabel.text = "Done!"
+                resetLabel.text = "DONE"
+                scoreLabel.text = ""
             },
             SKAction.waitForDuration(2.0),
-            SKAction.runBlock() { resetLabel.text = "Reset Scores" }
+            SKAction.runBlock() {
+                resetLabel.text = "RESET"
+                scoreLabel.text = "SCORE"
+            }
         ])
         resetLabel.runAction(animationSequence)
     }
@@ -39,7 +44,7 @@ class OptionsScene: SKScene {
             switch name {
             case "backButton", "backLabel":
                 backToMenu()
-            case "resetScoresButton", "resetScoresLabel":
+            case "resetScoresButton", "resetLabel", "scoreLabel":
                 resetHighscores()
             default:
                 break
