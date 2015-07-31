@@ -13,6 +13,7 @@ import SpriteKit
 class GameplayScene: SKScene {
     /* -- Color managment properties -- */
     let colors = ["Green", "Red", "Blue", "Yellow", "White", "Black", "Purple", "Pink", "Brown", "Orange"]
+    var labelOutlines = [String: [SKLabelNode]]()
     var nodeColors = [String]()
     var targetColor : String?
     
@@ -32,10 +33,10 @@ class GameplayScene: SKScene {
     // Whether the actual game has started
     var started = false
     // Time before the buttons are revealed
-    let thinkTime = 1.0
+    let thinkTime = 1.41
     var thinkTimeCounter : NSTimeInterval?
-    // Whether we are overtime and should ignore touches
-    var overtime = false
+    // Whether we are animating the label and should ignore touches
+    var decreaseHeartLabelAnimationInProgress = false
     var countdown = false
     
     /* -- Game settings properties -- */
@@ -52,19 +53,19 @@ class GameplayScene: SKScene {
             self.resumeGame()
         }
         
-        /* Setup your scene here */
         if !countdown {
             self.countdown = true
-            preGameCountdown()
+            self.preGameCountdown()
         }
         
-        setLabelText("colorLabel", text: "")
+        /* Setup your scene here */
+        self.setLabelText("colorLabel", text: "")
         
-        setBlocker(false, zPos: self.foregroundZPosition)
+        self.setBlocker(false, zPos: 4)
     }
     
     override func update(currentTime: NSTimeInterval) {
-        if overtime || countdown {
+        if decreaseHeartLabelAnimationInProgress || countdown {
             return
         }
         
@@ -79,12 +80,12 @@ class GameplayScene: SKScene {
         let timeLabel = childNodeWithName("timeLabel") as! SKLabelNode
         // If the session has started, show the time from start
         if started {
-            let timeRemaining = ScoreManager.goalTime - (currentTime - self.time!)
+            let timeRemaining = self.goalTime - (currentTime - self.time!)
             if timeRemaining < 0.0 {
                 timeLabel.text = "Too Late!"
                 if self.gameMode == .Countdown {
-                    self.overtime = true
-                    outOfTime()
+                    self.decreaseHeartLabelAnimationInProgress = true
+                    decreaseHeartLabelAnimation()
                     return
                 }
             } else {
@@ -96,7 +97,7 @@ class GameplayScene: SKScene {
         }
         
         // When the pre-session screen should disappear
-        if (self.thinkTimeCounter! - currentTime) < 0.0 && !started && !self.overtime{
+        if (self.thinkTimeCounter! - currentTime) < 0.0 && !started && !self.decreaseHeartLabelAnimationInProgress{
             self.started = true
             self.time = currentTime
             setBlocker(true, zPos: 0)
@@ -117,7 +118,7 @@ class GameplayScene: SKScene {
     
     func checkPress(color: String) -> () {
         // Ignore presses if the player is out of time
-        if self.overtime || self.countdown {
+        if self.decreaseHeartLabelAnimationInProgress || self.countdown {
             return
         }
         
@@ -134,18 +135,20 @@ class GameplayScene: SKScene {
             setLabelText("timeLabel", text: "Correct!")
             updateScore()
         } else {
-            decreaseHeart()
-            setLabelText("timeLabel", text: "False!")
+            setLabelText("timeLabel", text: "Wrong!")
+            self.decreaseHeartLabelAnimationInProgress = true
+            decreaseHeartLabelAnimation()
             debugLabel.text = "FALSE!"
         }
-        
-        startNewLevel()
+        if !self.decreaseHeartLabelAnimationInProgress {
+            startNewLevel()
+        }
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         // Get the node that was pressed
-        let touch = touches.first
-        let location = touch!.locationInNode(self)
+        let touch = touches.first!
+        let location = touch.locationInNode(self)
         let node = self.nodeAtPoint(location)
         
         let debugLabel = childNodeWithName("debugLabel") as! SKLabelNode

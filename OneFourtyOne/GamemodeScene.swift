@@ -49,8 +49,8 @@ class GamemodeScene: SKScene {
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         /* Called when a touch begins */
         
-        let touch = touches.first
-        let location = touch!.locationInNode(self)
+        let touch = touches.first!
+        let location = touch.locationInNode(self)
         let node = self.nodeAtPoint(location)
         
         if let name = node.name {

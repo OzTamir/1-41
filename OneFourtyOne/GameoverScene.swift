@@ -59,8 +59,8 @@ class GameoverScene: SKScene {
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         // Get the node that was pressed
-        let touch = touches.first
-        let location = touch!.locationInNode(self)
+        let touch = touches.first!
+        let location = touch.locationInNode(self)
         let node = self.nodeAtPoint(location)
 
         if let name = node.name {
