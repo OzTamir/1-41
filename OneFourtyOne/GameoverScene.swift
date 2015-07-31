@@ -8,6 +8,7 @@
 
 import UIKit
 import SpriteKit
+import Social
 
 class GameoverScene: SKScene {
     var mode: GameModes?
@@ -49,6 +50,33 @@ class GameoverScene: SKScene {
         self.view?.presentScene(gameplayScene, transition: transition)
     }
     
+    func shareScoreWithService(serviceName: String) -> () {
+        let shareSheet = SLComposeViewController(forServiceType: serviceName)
+        
+        shareSheet.completionHandler = {result in
+            switch result as SLComposeViewControllerResult {
+                case .Cancelled:
+                    break
+                case .Done:
+                    break
+            }
+        }
+        
+        shareSheet.setInitialText("I scored \(self.score!) on 1:41! I challange you to beat my score!")
+            
+//        //  Adds an image to the Tweet.  Image named image.png
+//        if (![tweetSheet addImage:[UIImage imageNamed:@"image.png"]]) {
+//            NSLog(@"Error: Unable to add image");
+//        }
+//        //  Add an URL to the Tweet.  You can add multiple URLs.
+//        if (![tweetSheet addURL:[NSURL URLWithString:@"http://twitter.com/"]]){
+//            NSLog(@"Error: Unable to URL");
+//        }
+        
+        let controller = self.view?.window?.rootViewController
+        controller?.presentViewController(shareSheet, animated: true, completion: nil)
+    }
+    
     // Called when the back button is pressed
     func backToMenu() -> () {
         let transition = SKTransition.pushWithDirection(.Down, duration: AppDelegate.animationDuration)
@@ -69,6 +97,10 @@ class GameoverScene: SKScene {
                     newGame()
                 case "menuButton", "menuLabel":
                     backToMenu()
+                case "tweetScoreButton", "tweetScoreLabel":
+                    shareScoreWithService(SLServiceTypeTwitter)
+                case "facebbokScoreButton", "facebookScoreLabel":
+                    shareScoreWithService(SLServiceTypeFacebook)
                 default:
                     break
             }
