@@ -49,6 +49,22 @@ class GameplayScene: SKScene {
     let foregroundZPosition = 4
     
     override func didMoveToView(view: SKView) {
+        if !AppDelegate.adsEnabled {
+            let adsNode = childNodeWithName("adsNode")!
+            adsNode.hidden = true
+            for childNode in self.children {
+                if let node = childNode as? SKNode{
+                    if node.position.y < 196 {
+                        if node.name!.rangeOfString("heart") != nil {
+                            node.position = CGPoint(x: node.position.x, y: node.position.y + (97.5))
+                        } else {
+                            node.position = CGPoint(x: node.position.x, y: node.position.y - 90)
+                        }
+                    }
+                }
+            }
+        }
+        
         if self.returnedFromPause {
             self.resumeGame()
         }
