@@ -148,7 +148,6 @@ extension GameplayScene {
         // Choose the color for this game
         var arrayKey = Int(arc4random_uniform(UInt32(self.colors.count)))
         self.targetColor = colors[arrayKey]
-        println(self.targetColor!)
         var targetLabelText : String?
         
         switch GameManager.gameMode! {
@@ -179,7 +178,7 @@ extension GameplayScene {
             let borderSize = 1.0
             label.fontColor = fontColor
             if let outlineArray = self.labelOutlines[labelName] {
-                for (idx, label) in enumerate(outlineArray) {
+                for (idx, _) in enumerate(outlineArray) {
                     setLabelText("\(labelName)\(idx)", text: text)
                 }
             } else {
@@ -212,7 +211,6 @@ extension GameplayScene {
     // Initialize the buttons, the labels and the colors
     func initButtons() -> () {
         self.nodeColors = []
-        var labels = [SKLabelNode]()
         var items = ColorManager.getColorNames(4, withColorName: self.targetColor!)
         
         // Init the up-right button/label
