@@ -21,8 +21,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         if AppDelegate.defaults.boolForKey("notFirstRun") == false {
-            ScoreManager.resetHighscores()
+            GameManager.resetHighscores()
+            // TODO: Decide on a default mode
+            GameManager.setGameMode(GameModes.Hard)
             AppDelegate.defaults.setBool(true, forKey: "notFirstRun")
+        }
+        else {
+            // Set the Game's mode
+            GameManager.gameMode = GameModes(rawValue: AppDelegate.defaults.stringForKey("gameMode")!)
         }
         return true
     }

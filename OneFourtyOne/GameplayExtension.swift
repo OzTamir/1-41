@@ -105,7 +105,7 @@ extension GameplayScene {
         for _ in 0..<livesToDecrease {
             decreaseHeart(false)
         }
-        setLabelText("scoreCounter", text: ScoreManager.formatScore(self.score))
+        setLabelText("scoreCounter", text: GameManager.formatScore(self.score))
         self.returnedFromPause = false
     }
     
@@ -114,7 +114,7 @@ extension GameplayScene {
         let transition = SKTransition.pushWithDirection(.Left, duration: 0.25)
         let gameoverScene = GameoverScene(fileNamed: "GameoverScene")!
         gameoverScene.score = self.score
-        gameoverScene.mode = self.gameMode
+        //gameoverScene.mode = self.gameMode
         gameoverScene.scaleMode = AppDelegate.sceneScaleMode
         self.view?.presentScene(gameoverScene, transition: transition)
     }
@@ -146,11 +146,28 @@ extension GameplayScene {
     // Setup a new game session
     func initDialog() -> () {
         // Choose the color for this game
-        let arrayKey = Int(arc4random_uniform(UInt32(self.colors.count)))
+        var arrayKey = Int(arc4random_uniform(UInt32(self.colors.count)))
         self.targetColor = colors[arrayKey]
+        var targetLabelText : String?
         
-        setLabelText("instructionLabel", text: "Press the button that says")
-        setLabelText("colorLabel", text: self.targetColor!, withColor: ColorManager.colorForName[self.targetColor!])
+        switch GameManager.gameMode! {
+            case .Easy:
+                targetLabelText = self.targetColor!
+            case .Hard:
+                arrayKey = Int(arc4random_uniform(UInt32(self.colors.count)))
+                targetLabelText = colors[arrayKey]
+            case .Countdown:
+                /*
+                TODO: Decide on what happens in this mode!
+                //targetLabelText = self.targetColor!
+                For testing purposes:
+                */
+                arrayKey = Int(arc4random_uniform(UInt32(self.colors.count)))
+                targetLabelText = colors[arrayKey]
+        }
+        
+        setLabelText("instructionLabel", text: GameManager.getInstructionText())
+        setLabelText("colorLabel", text: targetLabelText!, withColor: ColorManager.colorForName[self.targetColor!])
     }
     
     // Set the text of an SKLabel
@@ -217,7 +234,7 @@ extension GameplayScene {
         // Init the down-left button/label
         let downLeftButton = childNodeWithName("downLeftButton")
         downLeftButton?.runAction(SKAction.colorizeWithColor(ColorManager.getRandomColor(), colorBlendFactor: 1.0, duration: 0.0))
-        setLabelText("downLeftLabel", text: items[3], withColor: ColorManager.getRandomColor(0.6))
+        setLabelText("downLeftLabel", text: items[3], withColor: ColorManager.getRandomColor(0.9))
         self.nodeColors.append(items[3])
     }
     
@@ -232,7 +249,7 @@ extension GameplayScene {
     func pauseGame() -> () {
         let transition = SKTransition.pushWithDirection(.Up, duration: AppDelegate.animationDuration)
         let pauseScene = PauseScene(fileNamed: "PauseScene")!
-        pauseScene.currentGameMode = self.gameMode
+        //pauseScene.currentGameMode = self.gameMode
         pauseScene.currentLives = self.lives
         pauseScene.currentScore = self.score
         pauseScene.scaleMode = AppDelegate.sceneScaleMode
@@ -243,9 +260,8 @@ extension GameplayScene {
     func updateScore() -> () {
         let animationScale = 2.0
         let scoreAnimation = SKAction.scaleTo(CGFloat(animationScale), duration: 0.25)
-        let newScore = ScoreManager.calculateScoreForGameMode(
-            self.gameMode,
-            currentScore: self.score,
+        let newScore = GameManager.calculateScore(
+            self.score,
             currentTime: self.currentTime,
             startTime: self.time
         )
@@ -253,7 +269,7 @@ extension GameplayScene {
             return
         }
         self.score = newScore
-        let changeText = SKAction.runBlock() { self.setLabelText("scoreCounter", text: ScoreManager.formatScore(newScore)) }
+        let changeText = SKAction.runBlock() { self.setLabelText("scoreCounter", text: GameManager.formatScore(newScore)) }
         let revertAnimation = SKAction.scaleTo(CGFloat(1), duration: 0.25)
         let completeAction = SKAction.sequence([scoreAnimation, changeText, revertAnimation])
         

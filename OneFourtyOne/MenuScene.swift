@@ -18,7 +18,7 @@ class MenuScene: SKScene {
 //        
 //        self.addChild(myLabel)
         let highscoreLabel = childNodeWithName("highscoreLabel") as! SKLabelNode
-        highscoreLabel.text = ScoreManager.formatScore(ScoreManager.getHighscoreForGameMode(.Countdown))
+        highscoreLabel.text = GameManager.formatScore(GameManager.getHighscore())
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -33,16 +33,19 @@ class MenuScene: SKScene {
                 case "startButton", "startLabel":
                     let transition = SKTransition.pushWithDirection(.Left, duration: AppDelegate.animationDuration)
                     let gameplayScene = GameplayScene(fileNamed: "GameplayScene")!
-                    gameplayScene.gameMode = .Countdown
+                    //gameplayScene.gameMode = GameManager.gameMode
                     gameplayScene.scaleMode = AppDelegate.sceneScaleMode
                     self.view?.presentScene(gameplayScene, transition: transition)
+                
                 case "optionsButton", "optionsLabel":
                     let transition = SKTransition.pushWithDirection(.Up, duration: AppDelegate.animationDuration)
                     let optionsScene = OptionsScene(fileNamed: "OptionsScene")!
                     optionsScene.scaleMode = AppDelegate.sceneScaleMode
                     self.view?.presentScene(optionsScene, transition: transition)
+                
                 case "titleLabel":
                     animateTitleOnTouch()
+                
                 default:
                     break
             }

@@ -51,7 +51,6 @@ class GameViewController: UIViewController {
         if let gameplayScene = skView.scene as? GameplayScene {
             let transition = SKTransition.pushWithDirection(.Up, duration: 0.0)
             let pauseScene = PauseScene(fileNamed: "PauseScene")!
-            pauseScene.currentGameMode = gameplayScene.gameMode
             pauseScene.currentLives = gameplayScene.lives
             pauseScene.currentScore = gameplayScene.score
             pauseScene.scaleMode = AppDelegate.sceneScaleMode

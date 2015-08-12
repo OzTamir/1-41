@@ -9,16 +9,22 @@
 import UIKit
 import SpriteKit
 
+
 class OptionsScene: SKScene {
     override func didMoveToView(view: SKView) {
-        
+        updateGameModeLabel()
+    }
+    
+    func updateGameModeLabel() -> () {
+        let gameModeLabel = childNodeWithName("gameModeLabel") as! SKLabelNode
+        gameModeLabel.text = GameManager.gameMode!.rawValue.capitalizedString
     }
     
     func resetHighscores() -> () {
         // TODO: Display an "Are you sure?" Screen
         let resetLabel = childNodeWithName("resetLabel") as! SKLabelNode
         let scoreLabel = childNodeWithName("scoreLabel") as! SKLabelNode
-        ScoreManager.resetHighscores()
+        GameManager.resetHighscores()
         let animationSequence = SKAction.sequence([
             SKAction.runBlock() {
                 resetLabel.text = "DONE"
@@ -31,6 +37,18 @@ class OptionsScene: SKScene {
             }
         ])
         resetLabel.runAction(animationSequence)
+    }
+    
+    func changeGameMode() -> () {
+        switch GameManager.gameMode! {
+            case .Easy:
+                GameManager.setGameMode(.Hard)
+            case .Hard:
+                GameManager.setGameMode(.Countdown)
+            case .Countdown:
+                GameManager.setGameMode(.Easy)
+        }
+        updateGameModeLabel()
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -46,6 +64,8 @@ class OptionsScene: SKScene {
                 backToMenu()
             case "resetScoresButton", "resetLabel", "scoreLabel":
                 resetHighscores()
+            case "modeLabel", "modeButton", "gameModeLabel":
+                changeGameMode()
             default:
                 break
             }
