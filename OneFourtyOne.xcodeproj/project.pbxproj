@@ -26,7 +26,7 @@
 		F59049101B638CDD00352C74 /* GameoverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F590490F1B638CDD00352C74 /* GameoverScene.swift */; };
 		F59049121B63A81000352C74 /* GamemodeScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = F59049111B63A81000352C74 /* GamemodeScene.sks */; };
 		F59049141B63A81B00352C74 /* GamemodeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59049131B63A81B00352C74 /* GamemodeScene.swift */; };
-		F5CD56A81B63B093009D63AA /* ScoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5CD56A71B63B093009D63AA /* ScoreManager.swift */; };
+		F5CD56A81B63B093009D63AA /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5CD56A71B63B093009D63AA /* GameManager.swift */; };
 		F5D3C7831B63D59E00EEF644 /* PauseScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = F5D3C7821B63D59E00EEF644 /* PauseScene.sks */; };
 		F5D3C7851B63D5AB00EEF644 /* PauseScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D3C7841B63D5AB00EEF644 /* PauseScene.swift */; };
 /* End PBXBuildFile section */
@@ -65,7 +65,7 @@
 		F590490F1B638CDD00352C74 /* GameoverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameoverScene.swift; sourceTree = "<group>"; };
 		F59049111B63A81000352C74 /* GamemodeScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GamemodeScene.sks; sourceTree = "<group>"; };
 		F59049131B63A81B00352C74 /* GamemodeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamemodeScene.swift; sourceTree = "<group>"; };
-		F5CD56A71B63B093009D63AA /* ScoreManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreManager.swift; sourceTree = "<group>"; };
+		F5CD56A71B63B093009D63AA /* GameManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		F5D3C7821B63D59E00EEF644 /* PauseScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = PauseScene.sks; sourceTree = "<group>"; };
 		F5D3C7841B63D5AB00EEF644 /* PauseScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PauseScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -117,7 +117,7 @@
 				F57691331B6261A3004E37C1 /* GameplayScene.sks */,
 				F590490D1B638CD300352C74 /* GameoverScene.sks */,
 				F5D3C7821B63D59E00EEF644 /* PauseScene.sks */,
-				F5CD56A71B63B093009D63AA /* ScoreManager.swift */,
+				F5CD56A71B63B093009D63AA /* GameManager.swift */,
 				F50FCF641B6A536F00F1DA7B /* ColorManager.swift */,
 				F5406D691B66893B00B5E147 /* SKUtils.swift */,
 				F5D3C7841B63D5AB00EEF644 /* PauseScene.swift */,
@@ -272,7 +272,7 @@
 				F57691121B62602C004E37C1 /* MenuScene.swift in Sources */,
 				F50FCF651B6A536F00F1DA7B /* ColorManager.swift in Sources */,
 				F59049101B638CDD00352C74 /* GameoverScene.swift in Sources */,
-				F5CD56A81B63B093009D63AA /* ScoreManager.swift in Sources */,
+				F5CD56A81B63B093009D63AA /* GameManager.swift in Sources */,
 				F59049141B63A81B00352C74 /* GamemodeScene.swift in Sources */,
 				F5D3C7851B63D5AB00EEF644 /* PauseScene.swift in Sources */,
 				F59049081B62C7CB00352C74 /* GameplayExtension.swift in Sources */,

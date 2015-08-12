@@ -5,13 +5,13 @@
 //  Created by Oz Tamir on 7/25/15.
 //  Copyright (c) 2015 Oz Tamir. All rights reserved.
 //
-
+/*
 import UIKit
 import SpriteKit
 
 enum GameModes : String {
-    case Speed = "speed"
-    case Arcade = "arcade"
+    case Speed = "speed" // TODO: Rename EASY
+    case Arcade = "arcade" // TODO: Rename HARD
     case Countdown = "countdown"
 }
 
@@ -70,3 +70,4 @@ class GamemodeScene: SKScene {
         }
     }
 }
+*/

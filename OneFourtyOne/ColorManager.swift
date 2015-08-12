@@ -30,6 +30,8 @@ class ColorManager {
         return ColorManager.colorForName[randomColorName]!
     }
     
+//    class func getColorPairs(number: Int, withColorName: String) -> ([])
+    
     // Get an array with names of colors
     class func getColorNames(number: Int, withColorName: String) -> ([String]) {
         var items = [String]()
@@ -37,10 +39,8 @@ class ColorManager {
         // Arguments are constants
         var counter = number
         while counter > 0 {
-            
             // random key from array
             let arrayKey = Int(arc4random_uniform(UInt32(ColorManager.colorNames.count)))
-            
             if contains(items, ColorManager.colorNames[arrayKey]) {
                 continue
             }
@@ -48,10 +48,7 @@ class ColorManager {
             if withColorName == ColorManager.colorNames[arrayKey] {
                 targetInArray = true
             }
-            // your random number
             items.append(ColorManager.colorNames[arrayKey])
-            
-            // Decrease the counter to advance the loop
             counter -= 1
         }
         

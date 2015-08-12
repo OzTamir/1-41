@@ -17,27 +17,19 @@ class GameoverScene: SKScene {
     override func didMoveToView(view: SKView) {
         let highScoreLabel = childNodeWithName("highscoreLabel") as! SKLabelNode
         highScoreLabel.hidden = true
+        
         let scoreLabel = childNodeWithName("scoreLabel") as! SKLabelNode
         if let score = self.score {
-            scoreLabel.text = ScoreManager.formatScore(score)
+            scoreLabel.text = GameManager.formatScore(score)
         } else {
             scoreLabel.text = "ERROR"
         }
-        if let gameMode = self.mode {
-            if let score = self.score {
-                let modeHighscore = ScoreManager.getHighscoreForGameMode(gameMode)
-                switch gameMode {
-                    case .Arcade, .Countdown:
-                        if score > modeHighscore {
-                            ScoreManager.setHighscoreForGameMode(gameMode, newScore: score)
-                            highScoreLabel.hidden = false
-                        }
-                    case .Speed:
-                        if score < modeHighscore && score > 0.0 {
-                            ScoreManager.setHighscoreForGameMode(gameMode, newScore: score)
-                            highScoreLabel.hidden = false
-                        }
-                }
+        
+        if let score = self.score {
+            let modeHighscore = GameManager.getHighscore()
+            if score > modeHighscore {
+                GameManager.setHighscore(score)
+                highScoreLabel.hidden = false
             }
         }
     }
@@ -45,7 +37,7 @@ class GameoverScene: SKScene {
     func newGame() -> () {
         let transition = SKTransition.pushWithDirection(.Right, duration: AppDelegate.animationDuration)
         let gameplayScene = GameplayScene(fileNamed: "GameplayScene")
-        gameplayScene.gameMode = .Countdown
+        //gameplayScene.gameMode = GameManager.gameMode
         gameplayScene.scaleMode = AppDelegate.sceneScaleMode
         self.view?.presentScene(gameplayScene, transition: transition)
     }

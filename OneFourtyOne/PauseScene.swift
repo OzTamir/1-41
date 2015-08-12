@@ -12,11 +12,11 @@ import SpriteKit
 class PauseScene: SKScene {
     var currentLives : Int?
     var currentScore : Double?
-    var currentGameMode : GameModes?
+    //var currentGameMode : GameModes?
     
     override func didMoveToView(view: SKView) {
         let currentScoreLabel = childNodeWithName("currentScore") as! SKLabelNode
-        currentScoreLabel.text = ScoreManager.formatScore(currentScore!)
+        currentScoreLabel.text = GameManager.formatScore(currentScore!)
     }
     
     func resumeGame() -> () {
@@ -24,7 +24,7 @@ class PauseScene: SKScene {
         let gameplayScene = GameplayScene(fileNamed: "GameplayScene")
         gameplayScene.lives = self.currentLives!
         gameplayScene.score = self.currentScore!
-        gameplayScene.gameMode = self.currentGameMode
+        //gameplayScene.gameMode = self.currentGameMode
         gameplayScene.returnedFromPause = true
         gameplayScene.scaleMode = AppDelegate.sceneScaleMode
         self.view?.presentScene(gameplayScene, transition: transition)
