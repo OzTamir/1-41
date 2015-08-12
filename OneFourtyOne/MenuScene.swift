@@ -31,7 +31,7 @@ class MenuScene: SKScene {
         if let name = node.name {
             switch name {
                 case "startButton", "startLabel":
-                    let transition = SKTransition.pushWithDirection(.Left, duration: AppDelegate.animationDuration)
+                    let transition = SKTransition.pushWithDirection(.Down, duration: AppDelegate.animationDuration)
                     let gameplayScene = GameplayScene(fileNamed: "GameplayScene")!
                     //gameplayScene.gameMode = GameManager.gameMode
                     gameplayScene.scaleMode = AppDelegate.sceneScaleMode

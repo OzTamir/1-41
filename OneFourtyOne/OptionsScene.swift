@@ -13,11 +13,38 @@ import SpriteKit
 class OptionsScene: SKScene {
     override func didMoveToView(view: SKView) {
         updateGameModeLabel()
+        
+        if !AppDelegate.adsEnabled {
+            let adsNode = childNodeWithName("adsNode")!
+            adsNode.hidden = true
+            for node in self.children {
+                if node.position.y < 648 {
+                    node.position = CGPoint(x: node.position.x, y: node.position.y - 90)
+                }
+            }
+        }
     }
     
     func updateGameModeLabel() -> () {
         let gameModeLabel = childNodeWithName("gameModeLabel") as! SKLabelNode
         gameModeLabel.text = GameManager.gameMode!.rawValue.capitalizedString
+    }
+    
+    func setAdsStatus() -> () {
+        let adsStatusLabel = childNodeWithName("adsStatusLabel") as! SKLabelNode
+        if AppDelegate.adsEnabled {
+            adsStatusLabel.text = "Disabled"
+            let adsNode = childNodeWithName("adsNode")!
+            adsNode.hidden = true
+            for node in self.children {
+                if node.position.y < 648 {
+                    node.position = CGPoint(x: node.position.x, y: node.position.y - 90)
+                }
+            }
+        } else {
+            adsStatusLabel.text = "Enabled"
+        }
+        AppDelegate.adsEnabled = !AppDelegate.adsEnabled
     }
     
     func resetHighscores() -> () {
@@ -66,6 +93,8 @@ class OptionsScene: SKScene {
                 resetHighscores()
             case "modeLabel", "modeButton", "gameModeLabel":
                 changeGameMode()
+            case "adsStatusLabel", "adsLabel", "adsButton":
+                setAdsStatus()
             default:
                 break
             }

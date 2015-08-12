@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     static let defaults = NSUserDefaults.standardUserDefaults()
     static let animationDuration = 0.5
     static let sceneScaleMode = SKSceneScaleMode.AspectFill
+    static var adsEnabled = true
     var window: UIWindow?
 
 

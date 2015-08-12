@@ -15,6 +15,16 @@ class GameoverScene: SKScene {
     var score : Double?
     
     override func didMoveToView(view: SKView) {
+        if !AppDelegate.adsEnabled {
+            let adsNode = childNodeWithName("adsNode")!
+            adsNode.hidden = true
+            for node in self.children {
+                if node.position.y < 648 {
+                    node.position = CGPoint(x: node.position.x, y: node.position.y - 90)
+                }
+            }
+        }
+        
         let highScoreLabel = childNodeWithName("highscoreLabel") as! SKLabelNode
         highScoreLabel.hidden = true
         

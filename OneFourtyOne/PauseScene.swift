@@ -17,6 +17,16 @@ class PauseScene: SKScene {
     override func didMoveToView(view: SKView) {
         let currentScoreLabel = childNodeWithName("currentScore") as! SKLabelNode
         currentScoreLabel.text = GameManager.formatScore(currentScore!)
+        
+        if !AppDelegate.adsEnabled {
+            let adsNode = childNodeWithName("adsNode")!
+            adsNode.hidden = true
+            for node in self.children {
+                if node.position.y < 648 {
+                    node.position = CGPoint(x: node.position.x, y: node.position.y - 90)
+                }
+            }
+        }
     }
     
     func resumeGame() -> () {
